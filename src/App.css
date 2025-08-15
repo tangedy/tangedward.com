@@ -132,7 +132,7 @@ body {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto auto;
   gap: clamp(1.5rem, 4vw, 3rem);
-  max-width: 1200px;
+  max-width: 1120px;
   width: 100%;
   position: relative;
   margin: 0 auto;
@@ -199,7 +199,7 @@ body {
 }
 
 .summary-text {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1rem, 4vw, 1.5rem);
   line-height: 1.17;
   color: #606060;
   font-family: 'DM Sans', sans-serif;

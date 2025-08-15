@@ -81,7 +81,7 @@ function App() {
               ref={summaryText.ref}
               className={`summary-text fade-in-element ${summaryText.isVisible ? 'visible' : ''}`}
             >
-              Edward Tang is a developer who loves building design-forward digital solutions, and discovering new ways to define how users interact with technology and AI. Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
+              Edward Tang is a developer who loves<br/> building design-forward digital solutions,<br/> and discovering new ways to define how<br/> users interact with technology and AI.<br/>Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
             </div>
           </div>
 
