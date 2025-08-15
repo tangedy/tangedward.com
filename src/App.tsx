@@ -4,8 +4,8 @@ import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 
 function App() {
   // Use staggered fade-in for each section with proper types
-  const headerLeft = useStaggeredFadeIn<HTMLDivElement>(0, { delay: 150 });
-  const headerRight = useStaggeredFadeIn<HTMLDivElement>(1, { delay: 150 });
+  const headerLeft = useStaggeredFadeIn<HTMLDivElement>(0, { delay: 200 });
+  const headerRight = useStaggeredFadeIn<HTMLDivElement>(1, { delay: 200 });
   const chineseName = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
   const nameDivider = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
   const englishName = useStaggeredFadeIn<HTMLDivElement>(4, { delay: 200 });
