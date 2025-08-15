@@ -81,7 +81,7 @@ function App() {
               ref={summaryText.ref}
               className={`summary-text fade-in-element ${summaryText.isVisible ? 'visible' : ''}`}
             >
-              Edward Tang is a developer who loves<br/> building design-forward digital solutions,<br/> and discovering new ways to define how<br/> users interact with technology and AI.<br/>Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
+              Edward is a developer who loves<br/> building design-forward digital solutions,<br/> and discovering new ways to define how<br/> users interact with technology and AI.<br/>Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
             </div>
           </div>
 
@@ -97,10 +97,10 @@ function App() {
               ref={linksList.ref}
               className={`links-list fade-in-element ${linksList.isVisible ? 'visible' : ''}`}
             >
-              <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">linkedin.com/in/tanged</a>
-              <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">github.com/tangedy</a>
-              <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">artstation.com/tangedy</a>
-              <a href="mailto:e56tang@uwaterloo.ca">e56tang@uwaterloo.ca</a>
+              <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">linkedin.com/in/tanged   ↗</a>
+              <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">github.com/tangedy        ↗</a>
+              <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">artstation.com/tangedy  ↗</a>
+              <a href="mailto:e56tang@uwaterloo.ca">e56tang@uwaterloo.ca ↗</a>
             </div>
           </div>
 
