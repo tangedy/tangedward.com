@@ -1,3 +1,26 @@
+/* Staggered Fade-In Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Custom Font Face */
 @font-face {
   font-family: 'XuandongKaishu';
@@ -143,9 +166,9 @@ body {
 }
 
 .name-divider {
-  width: 1px;
-  height: clamp(50px, 8vw, 60px);
-  background-color: #333;
+  width: 2px;
+  height: clamp(50px, 8vw, 100px);
+  background-color: #3f3c3c;
 }
 
 .english-name {
@@ -220,10 +243,11 @@ body {
 .links-list a {
   color: #333;
   text-decoration: none;
+  font-family: 'inter ', sans-serif;
   font-size: clamp(0.8rem, 2vw, 0.9rem);
   transition: color 0.3s ease;
   padding: clamp(0.125rem, 0.5vw, 0.25rem) 0;
-  min-height: 32px;
+  min-height: 16px;
   display: flex;
   align-items: center;
 }
