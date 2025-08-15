@@ -1,0 +1,248 @@
+/* About Page Specific Styles */
+
+/* About Page Layout - Much reduced padding for better viewport usage */
+.about-wrapper {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(1rem, 5vw, 2rem);
+  padding-top: clamp(30px, calc(50px + 1vw), 70px); /* Drastically reduced padding to fit all content */
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.5rem); /* Tighter gap for better space usage */
+}
+
+/* About Title - Using existing name styles */
+.about-title h1 {
+  font-size: clamp(2rem, 5vw, 2.5rem); /* Same as english-name */
+  font-weight: 400;
+  color: #333; /* Same as english-name */
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.24; /* Same as english-name */
+  text-align: left;
+  margin-bottom: 0;
+}
+
+/* About Sections - Tighter spacing */
+.about-section {
+  margin-bottom: 0; /* Remove extra margin, using grid gap instead */
+}
+
+.about-section h2 {
+  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Same as links-heading */
+  font-weight: 600; /* Same as links-heading */
+  color: #333; /* Same as links-heading */
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem); /* Same as links-heading */
+  font-family: 'DM Sans', sans-serif;
+}
+
+.about-section p {
+  font-size: clamp(1rem, 4vw, 1.5rem); /* Same as summary-text */
+  line-height: 1.17; /* Same as summary-text */
+  color: #606060; /* Same as summary-text */
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; /* Same as summary-text */
+  margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Same as summary-text */
+}
+
+/* Skills Section - Using links styling */
+.skills-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 1vw, 0.5rem); /* Same as links-list */
+}
+
+.skill-category {
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+}
+
+.skill-category h3 {
+  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Same as links-heading */
+  font-weight: 600; /* Same as links-heading */
+  color: #333; /* Same as links-heading */
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem); /* Same as links-heading */
+  font-family: 'DM Sans', sans-serif;
+}
+
+.skill-category p {
+  font-size: clamp(0.8rem, 2vw, 0.9rem); /* Same as links-list a */
+  color: #333; /* Same as links-list a */
+  font-family: 'inter', sans-serif; /* Same as links-list a */
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
+/* Experience and Testimonial Grid Layout */
+.experience-testimonial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+/* Experience Timeline */
+.experience-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.experience-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  align-items: center;
+  padding: clamp(0.5rem, 2vw, 0.75rem) 0;
+}
+
+.experience-content h3 {
+  font-size: clamp(0.8rem, 2vw, 0.9rem); /* Same as links-list a */
+  font-weight: 400; /* Same as links-list a */
+  color: #333; /* Same as links-list a */
+  margin-bottom: clamp(0.125rem, 0.5vw, 0.25rem);
+  font-family: 'inter', sans-serif; /* Same as links-list a */
+}
+
+.experience-content p {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
+  color: #999; /* Same as footer-credit */
+  margin-bottom: 0;
+  font-family: inherit;
+}
+
+.experience-date {
+  text-align: right;
+}
+
+.experience-date span {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
+  color: #999; /* Same as footer-credit */
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.timeline-line {
+  height: 1px;
+  background-color: #E0E0E0;
+  margin: clamp(0.25rem, 1vw, 0.5rem) 0;
+}
+
+/* Testimonial Right Side */
+.testimonial-right {
+  align-self: start;
+  text-align: right;
+}
+
+/* Testimonial Section - Using summary label styling */
+.testimonial-right blockquote {
+  font-size: clamp(1rem, 4vw, 1.5rem); /* Same as summary-text */
+  line-height: 1.17; /* Same as summary-text */
+  color: #606060; /* Same as summary-text */
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; /* Same as summary-text */
+  font-style: italic;
+  margin: 0 0 clamp(0.5rem, 2vw, 1rem) 0;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  border-right: 2px solid #5a5858; /* Right border instead of left */
+  background: rgba(241, 241, 241, 0.2); /* More subtle background */
+  text-align: right;
+}
+
+.testimonial-right cite {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
+  color: #999; /* Same as footer-credit */
+  font-style: normal;
+  font-weight: normal;
+  font-family: inherit;
+  text-align: right;
+  display: block;
+}
+
+/* Container Queries for Component-Level Responsiveness */
+@container (max-width: 600px) {
+  .about-title h1 {
+    text-align: center;
+  }
+  
+  .experience-testimonial-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+  
+  .testimonial-right {
+    text-align: left;
+  }
+  
+  .testimonial-right blockquote {
+    text-align: left;
+    border-right: none;
+    border-left: 2px solid #5a5858;
+  }
+  
+  .testimonial-right cite {
+    text-align: left;
+  }
+}
+
+/* Responsive Breakpoints - Same as main app */
+@media (min-width: 1200px) {
+  .about-wrapper {
+    max-width: 1200px;
+    gap: 1.5rem; /* Reduced for better space usage */
+    padding: 2rem;
+    padding-top: 0px; /* Drastically reduced padding */
+  }
+  
+  .skills-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .about-wrapper {
+    max-width: 90%;
+    gap: clamp(1rem, 3vw, 1.5rem); /* Tighter spacing */
+    padding: clamp(1.5rem, 4vw, 2rem);
+    padding-top: clamp(80px, calc(70px + 2vw), 100px); /* Drastically reduced padding */
+  }
+}
+
+@media (max-width: 767px) {
+  .about-wrapper {
+    gap: clamp(0.75rem, 2vw, 1rem); /* Much tighter spacing */
+    padding-top: clamp(70px, calc(60px + 2vw), 90px); /* Drastically reduced padding */
+  }
+  
+  .skills-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .experience-testimonial-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+  
+  .testimonial-right {
+    text-align: left;
+  }
+  
+  .testimonial-right blockquote {
+    text-align: left;
+    border-right: none;
+    border-left: 2px solid #5a5858;
+  }
+  
+  .testimonial-right cite {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-wrapper {
+    padding: clamp(0.75rem, 3vw, 1rem);
+    padding-top: clamp(60px, calc(50px + 2vw), 80px); /* Drastically reduced padding */
+    gap: clamp(0.5rem, 1.5vw, 0.75rem); /* Much tighter spacing */
+  }
+}

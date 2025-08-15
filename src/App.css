@@ -45,7 +45,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  background: linear-gradient(10deg, #dddddb 25%, #F4F4F4 75%);
+  background: linear-gradient(10deg, #eeeee5 0%, #f5f7f8 70%);
   color: #333;
   overflow: hidden;
   height: 100vh;
@@ -115,6 +115,31 @@ body {
   color: #666;
 }
 
+.nav-button {
+  background: none;
+  border: none;
+  color: #333;
+  text-decoration: none;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 400;
+  transition: color 0.3s ease;
+  padding: clamp(0.25rem, 1vw, 0.5rem);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-button:hover {
+  color: #666;
+}
+
+.nav-links .active {
+  color: #666;
+  font-weight: 500;
+}
+
 /* Main Content - Centered */
 .main-content {
   display: flex;
@@ -174,7 +199,7 @@ body {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 400;
   font-family: 'DM Sans', sans-serif;
-  color: #383636;
+  color: #242222;
   line-height: 1.24;
 }
 

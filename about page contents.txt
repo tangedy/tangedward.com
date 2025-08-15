@@ -1,0 +1,13 @@
+Brief summary about me: [write something here]
+
+Skills: Languages: Java, JavaScript, TypeScript, Python, C, HTML/CSS
+Tools & Frameworks: React, Node.js, Next.JS, Flask, TailwindCSS, Springboot, Maven, Git, Azure DevOps, Linux
+
+Experience: Web developer @ University of Waterloo Boxing Club, Backend Developer @ Government of Ontario, App Designer @ Waddle
+
+
+
+Review: "Edward has consistently delivered outstanding results while
+working with our teams and business clients. Both our client and
+our own teams are very happy working with him." - Senior Manager, Government of Ontario
+
