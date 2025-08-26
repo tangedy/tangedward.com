@@ -4,9 +4,10 @@ import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 
 interface AboutProps {
   onNavigateHome: () => void;
+  onNavigateToProjects: () => void;
 }
 
-function About({ onNavigateHome }: AboutProps) {
+function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
   // Use staggered fade-in for each section
   const aboutTitle = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
   const briefSummary = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
@@ -28,9 +29,9 @@ function About({ onNavigateHome }: AboutProps) {
           <div className="header-right">
             <nav className="nav-links">
               <button onClick={onNavigateHome} className="nav-button">Home</button>
-              <a href="#about" className="active">About</a>
-              <a href="#projects">Projects</a>
-              <a href="#contact">Contact</a>
+              <button className="nav-button active">About</button>
+              <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
+              <button className="nav-button">Contact</button>
             </nav>
           </div>
         </div>
@@ -66,11 +67,11 @@ function About({ onNavigateHome }: AboutProps) {
             <div className="skills-content">
               <div className="skill-category">
                 <h3>Languages</h3>
-                <p>Java, JavaScript, TypeScript, Python, C, HTML/CSS</p>
+                <p>Python, C, C#, Java, JavaScript, TypeScript, HTML/CSS</p>
               </div>
               <div className="skill-category">
                 <h3>Tools & Frameworks</h3>
-                <p>React, Node.js, Next.JS, Flask, TailwindCSS, Springboot, Maven, Git, Azure DevOps, Linux</p>
+                <p>React, Node.js, Next.JS, Flask, Tailwind, Spring Boot, Maven, Git, Azure DevOps, Linux</p>
               </div>
             </div>
           </div>
@@ -90,27 +91,27 @@ function About({ onNavigateHome }: AboutProps) {
                     <p>Government of Ontario</p>
                   </div>
                   <div className="experience-date">
-                    <span>2024</span>
+                    <span>2025</span>
                   </div>
                 </div>
                 <div className="timeline-line"></div>
                 <div className="experience-item">
                   <div className="experience-content">
-                    <h3>Web Developer</h3>
+                    <h3>Founding App Designer</h3>
+                    <p>Waddlewell LLC</p>
+                  </div>
+                  <div className="experience-date">
+                    <span>2025</span>
+                  </div>
+                </div>
+                <div className="timeline-line"></div>
+                <div className="experience-item">
+                  <div className="experience-content">
+                    <h3>Frontend Developer</h3>
                     <p>University of Waterloo Boxing Club</p>
                   </div>
                   <div className="experience-date">
-                    <span>2023</span>
-                  </div>
-                </div>
-                <div className="timeline-line"></div>
-                <div className="experience-item">
-                  <div className="experience-content">
-                    <h3>App Designer</h3>
-                    <p>Waddle</p>
-                  </div>
-                  <div className="experience-date">
-                    <span>2022</span>
+                    <span>2024</span>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,163 @@
+/* =====================================
+   CONTACT PAGE SPECIFIC STYLES
+   ===================================== */
+
+/* Contact Wrapper */
+.contact-wrapper {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+ /* padding: clamp(1rem, 5vw, 2rem);*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+}
+
+/* Contact Content - Two column layout with separator */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(3rem, 6vw, 4rem);
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Left Side - Get in Touch Heading */
+.contact-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-heading {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  color: #606060;
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.17;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-heading span:first-child {
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+}
+
+/* Vertical Separator Line */
+.contact-separator {
+  width: 1px;
+  height: clamp(60px, 10vw, 80px);
+  background-color: #5a5858;
+  margin: 0 clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Right Side - Content */
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  align-items: flex-start;
+}
+
+.contact-text {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  color: #606060;
+  font-family: 'inter', sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 280px;
+}
+
+/* Container Queries for Component-Level Responsiveness */
+@container (max-width: 600px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  
+  .contact-separator {
+    width: 80%;
+    height: 1px;
+    margin: clamp(1rem, 2vw, 1.5rem) 0;
+  }
+  
+  .contact-left {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .contact-right {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* =====================================
+   CONTACT PAGE RESPONSIVE BREAKPOINTS
+   ===================================== */
+
+/* Large screens (1200px+) */
+@media (min-width: 1200px) {
+  .contact-wrapper {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+  
+  .contact-content {
+    gap: 4rem;
+  }
+}
+
+/* Medium screens (768px - 1199px) */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .contact-wrapper {
+    max-width: 90%;
+    padding: clamp(1.5rem, 4vw, 2rem);
+  }
+  
+  .contact-content {
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+}
+
+/* Small screens (up to 767px) */
+@media (max-width: 767px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  
+  .contact-separator {
+    width: 80%;
+    height: 1px;
+    margin: clamp(1rem, 2vw, 1.5rem) 0;
+  }
+  
+  .contact-left {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .contact-right {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Extra small screens (up to 480px) */
+@media (max-width: 480px) {
+  .contact-wrapper {
+    padding: clamp(0.75rem, 3vw, 1rem);
+  }
+  
+  .contact-content {
+    gap: clamp(1.5rem, 3vw, 2rem);
+  }
+  
+  .contact-heading {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+  }
+}

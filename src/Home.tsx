@@ -1,12 +1,15 @@
 import React from 'react';
 import './App.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
+import './Home.css';
 
 interface HomeProps {
   onNavigateToAbout: () => void;
+  onNavigateToProjects: () => void;
+  onNavigateToContact: () => void;
 }
 
-function Home({ onNavigateToAbout }: HomeProps) {
+function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: HomeProps) {
     // Use staggered fade-in for each section with proper types
     const headerLeft = useStaggeredFadeIn<HTMLDivElement>(0, { delay: 200 });
     const headerRight = useStaggeredFadeIn<HTMLDivElement>(1, { delay: 200 });
@@ -39,8 +42,8 @@ function Home({ onNavigateToAbout }: HomeProps) {
                 <nav className="nav-links">
                   <a href="#home" className="active">Home</a>
                   <button onClick={onNavigateToAbout} className="nav-button">About</button>
-                  <a href="#projects">Projects</a>
-                  <a href="#contact">Contact</a>
+                  <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
+                  <button onClick={onNavigateToContact} className="nav-button">Contact</button>
                 </nav>
               </div>
             </div>
