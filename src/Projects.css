@@ -83,6 +83,7 @@
   border-radius: 8px;
   transition: transform 0.3s ease;
   padding: 0px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .project-item:hover .project-image img {
