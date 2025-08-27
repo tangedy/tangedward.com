@@ -37,7 +37,7 @@ const projects: Project[] = [
     id: 3,
     title: "Pixelize",
     description: "A pixel art software made in Python with Object Oriented Programming that enables users to create detailed pixel art with tools like paint bucket, undo, and layers. Supports exporting artwork as transparent PNG files for seamless integration into other projects.",
-    technologies: ["In Development"],
+    technologies: ["Python"],
     year: "2023",
     imageUrl: "/project assets/Pixelize.png",
     githubUrl: "https://github.com/HD-Brody/Pixelize"
