@@ -16,13 +16,14 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Pixelize",
-    description: "A pixel art software made in Python with Object Oriented Programming that enables users to create detailed pixel art with tools like paint bucket, undo, and layers. Supports exporting artwork as transparent PNG files for seamless integration into other projects.",
-    technologies: ["In Development"],
-    year: "2023",
-    imageUrl: "/project assets/Pixelize.png",
-    githubUrl: "https://github.com/HD-Brody/Pixelize"
-  },
+    title: "Moti",
+    description: "A web app that takes you from vague goal to concrete plan. You input what you want to achieve, and it guides you through a consultation process to clarify exactly what you want, the logistics involved, and creates a time-bound action plan with phases and specific tasks.",
+    technologies: ["Tailwind css", "Typescript", "React", "Next.js", "Groq API"],
+    year: "2025",
+    imageUrl: "/project assets/MOTI.png",
+    liveUrl: "https://motiapp.dev",
+    githubUrl: "https://github.com/tangedy/MOTI"
+  }, 
   {
     id: 2,
     title: "Recipe Radar",
@@ -34,13 +35,12 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Moti",
-    description: "A web app that takes you from vague goal to concrete plan. You input what you want to achieve, and it guides you through a consultation process to clarify exactly what you want, the logistics involved, and creates a time-bound action plan with phases and specific tasks.",
-    technologies: ["Tailwind css", "Typescript", "React", "Next.js", "Groq API"],
-    year: "2025",
-    imageUrl: "/project assets/MOTI.png",
-    liveUrl: "https://motiapp.dev",
-    githubUrl: "https://github.com/tangedy/MOTI"
+    title: "Pixelize",
+    description: "A pixel art software made in Python with Object Oriented Programming that enables users to create detailed pixel art with tools like paint bucket, undo, and layers. Supports exporting artwork as transparent PNG files for seamless integration into other projects.",
+    technologies: ["In Development"],
+    year: "2023",
+    imageUrl: "/project assets/Pixelize.png",
+    githubUrl: "https://github.com/HD-Brody/Pixelize"
   }
 ];
 
