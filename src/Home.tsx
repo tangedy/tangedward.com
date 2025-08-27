@@ -43,7 +43,7 @@ function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: 
                   <a href="#home" className="active">Home</a>
                   <button onClick={onNavigateToAbout} className="nav-button">About</button>
                   <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
-                  <button onClick={onNavigateToContact} className="nav-button">Contact</button>
+                  {/* <button onClick={onNavigateToContact} className="nav-button">Contact</button> */}
                 </nav>
               </div>
             </div>

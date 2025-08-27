@@ -31,7 +31,7 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
               <button onClick={onNavigateHome} className="nav-button">Home</button>
               <button className="nav-button active">About</button>
               <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
-              <button className="nav-button">Contact</button>
+              {/* <button className="nav-button">Contact</button> */}
             </nav>
           </div>
         </div>
