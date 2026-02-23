@@ -10,7 +10,7 @@ interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ onNavigateHome, onNavigateToAbout, onNavigateToProjects }) => {
   // Use staggered fade-in for each section
-  const contactTitle = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
+
   const contactContent = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
 
   return (

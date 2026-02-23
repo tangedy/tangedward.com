@@ -19,7 +19,6 @@ export const useStaggeredFadeIn = <T extends HTMLElement>(
 ): UseStaggeredFadeInReturn<T> => {
   const {
     delay = 200,
-    duration = 800,
     threshold = 0.1,
     rootMargin = '0px 0px -50px 0px'
   } = options;
