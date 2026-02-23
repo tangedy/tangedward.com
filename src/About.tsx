@@ -121,7 +121,7 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
           >
             <h2>about me</h2>
             <p>
-              I'm an undergraduate honours student studying mathematics at the University of Waterloo. I enjoy solving complex problems that challenge my critical thinking, and learning new things everyday.<br></br><br></br>My unique background in the arts and principals of design allows me to bring a creative perspective to software development, focusing on the big picture and humanitarian design in the things I build.
+              I'm an undergraduate honours student studying Machine Learning at the University of Waterloo. I enjoy solving complex problems that challenge my critical thinking, and learning new things everyday.<br></br><br></br>My unique background in the arts and principals of design allows me to bring a creative perspective to software development, focusing on the big picture and humanitarian design in the things I build.
             </p>
           </div>
 
