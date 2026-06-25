@@ -87,7 +87,7 @@ function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: 
                   ref={summaryText.ref}
                   className={`summary-text fade-in-element ${summaryText.isVisible ? 'visible' : ''}`}
                 >
-                  Edward is a developer who loves<br/> building design-forward digital solutions,<br/> and discovering ways to redefine how<br/> users interact with technology and AI.<br/>Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
+                  Edward is a developer who loves<br/> building design-focused digital solutions,<br/> and exploring the ways<br/> users interact with technology and AI.<br/>Previously an artist.<br/><br/>Currently a student at <br/>the University of Waterloo.
                 </div>
               </div>
     
