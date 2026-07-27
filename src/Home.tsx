@@ -1,15 +1,17 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './App.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
+import { usePageMetadata } from './hooks/usePageMetadata';
 import './Home.css';
 
-interface HomeProps {
-  onNavigateToAbout: () => void;
-  onNavigateToProjects: () => void;
-  onNavigateToContact: () => void;
-}
+function Home() {
+    usePageMetadata(
+      'Edward Tang | Software Developer & Product Designer',
+      'Edward Tang is a software developer and product designer building thoughtful digital and AI experiences.',
+      '/'
+    );
 
-function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: HomeProps) {
     // Use staggered fade-in for each section with proper types
     const headerLeft = useStaggeredFadeIn<HTMLDivElement>(0, { delay: 200 });
     const headerRight = useStaggeredFadeIn<HTMLDivElement>(1, { delay: 200 });
@@ -22,7 +24,7 @@ function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: 
     const linksList = useStaggeredFadeIn<HTMLDivElement>(8, { delay: 200 });
     const footerCredit = useStaggeredFadeIn<HTMLDivElement>(9, { delay: 200 });
     return (
-        <div className="app">
+      <div className="app home-page">
           {/* Header with Navigation and Welcome Text */}
           <header className="header">
             <div className="header-content">
@@ -40,17 +42,17 @@ function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: 
                 className={`header-right fade-in-element ${headerRight.isVisible ? 'visible' : ''}`}
               >
                 <nav className="nav-links">
-                  <a href="#home" className="active">Home</a>
-                  <button onClick={onNavigateToAbout} className="nav-button">About</button>
-                  <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
-                  {/* <button onClick={onNavigateToContact} className="nav-button">Contact</button> */}
+                  <NavLink to="/" end className="nav-button">Home</NavLink>
+                  <NavLink to="/about" className="nav-button">About</NavLink>
+                  <NavLink to="/projects" className="nav-button">Projects</NavLink>
+                  <NavLink to="/contact" className="nav-button">Contact</NavLink>
                 </nav>
               </div>
             </div>
           </header>
     
           {/* Main Content - Centered */}
-          <div className="main-content">
+          <main className="main-content">
             <div className="content-wrapper">
               {/* Left Side - Name Section */}
               <div className="name-section-container">
@@ -118,7 +120,7 @@ function Home({ onNavigateToAbout, onNavigateToProjects, onNavigateToContact }: 
                 designed by Edward Tang and Yi Wen Quach
               </div>
             </div>
-          </div>
+          </main>
         </div>
       );
 }

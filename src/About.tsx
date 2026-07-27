@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import './About.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
+import { usePageMetadata } from './hooks/usePageMetadata';
 
 interface Experience {
   id: number;
@@ -11,15 +13,21 @@ interface Experience {
   imageUrl: string;
 }
 
-interface AboutProps {
-  onNavigateHome: () => void;
-  onNavigateToProjects: () => void;
-}
+function About() {
+  usePageMetadata(
+    'About | Edward Tang',
+    'Learn about Edward Tang\'s software development, product design, and machine learning experience.',
+    '/about'
+  );
 
-function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
   // Modal state
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const modalContentRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
 
   // Experiences data
   const experiences: Experience[] = [
@@ -58,32 +66,67 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
 
   // Modal functions
   const openModal = (experience: Experience) => {
+    triggerRef.current = document.activeElement as HTMLElement;
     setSelectedExperience(experience);
+    setIsClosing(false);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    const modalContent = document.querySelector('.modal-content') as HTMLElement;
-    const modalOverlay = document.querySelector('.modal-overlay') as HTMLElement;
-    
-    if (modalContent && modalOverlay) {
-      // Add exit animations
-      modalContent.style.animation = 'modalContentSlideOut 0.3s ease-in forwards';
-      modalOverlay.style.animation = 'modalFadeOut 0.3s ease-in forwards';
-      
-      // Wait for animation to complete before closing
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setSelectedExperience(null);
-      }, 200);
-    } else {
+  const closeModal = useCallback(() => {
+    if (isClosing) return;
+
+    setIsClosing(true);
+    closeTimerRef.current = window.setTimeout(() => {
       setIsModalOpen(false);
       setSelectedExperience(null);
+      setIsClosing(false);
+      triggerRef.current?.focus();
+    }, 300);
+  }, [isClosing]);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !modalContentRef.current) return;
+
+      const focusableElements = Array.from(
+        modalContentRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement?.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [closeModal, isModalOpen]);
+
+  useEffect(() => () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
     }
-  };
+  }, []);
 
   return (
-    <div className="app">
+    <div className="app about-page">
       {/* Header with Navigation */}
       <header className="header">
         <div className="header-content">
@@ -95,17 +138,17 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
           {/* Right Side - Navigation */}
           <div className="header-right">
             <nav className="nav-links">
-              <button onClick={onNavigateHome} className="nav-button">Home</button>
-              <button className="nav-button active">About</button>
-              <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
-              {/* <button className="nav-button">Contact</button> */}
+              <NavLink to="/" end className="nav-button">Home</NavLink>
+              <NavLink to="/about" className="nav-button">About</NavLink>
+              <NavLink to="/projects" className="nav-button">Projects</NavLink>
+              <NavLink to="/contact" className="nav-button">Contact</NavLink>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="main-content">
+      <main className="main-content">
         <div className="about-wrapper">
           {/* Page Title */}
           <div 
@@ -154,7 +197,8 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
               <div className="experience-timeline">
                 {experiences.map((experience, index) => (
                   <React.Fragment key={experience.id}>
-                    <div 
+                    <button
+                      type="button"
                       className="experience-item clickable"
                       onClick={() => openModal(experience)}
                     >
@@ -165,7 +209,7 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
                       <div className="experience-date">
                         <span>{experience.year}</span>
                       </div>
-                    </div>
+                    </button>
                     {index < experiences.length - 1 && <div className="timeline-line"></div>}
                   </React.Fragment>
                 ))}
@@ -186,18 +230,31 @@ function About({ onNavigateHome, onNavigateToProjects }: AboutProps) {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Experience Modal */}
       {isModalOpen && selectedExperience && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>×</button>
+        <div className={`modal-overlay ${isClosing ? 'closing' : ''}`} onClick={closeModal}>
+          <div
+            ref={modalContentRef}
+            className={`modal-content ${isClosing ? 'closing' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="experience-dialog-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              ref={closeButtonRef}
+              type="button"
+              className="modal-close"
+              onClick={closeModal}
+              aria-label="Close experience details"
+            >×</button>
             
             <div className="modal-body">
               {/* Left Side - Text Content */}
               <div className="modal-text">
-                <h2>{selectedExperience.title}</h2>
+                <h2 id="experience-dialog-title">{selectedExperience.title}</h2>
                 <h3>{selectedExperience.company}</h3>
                 <p>{selectedExperience.description}</p>
               </div>

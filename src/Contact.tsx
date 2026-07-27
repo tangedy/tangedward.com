@@ -1,20 +1,22 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './Contact.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
+import { usePageMetadata } from './hooks/usePageMetadata';
 
-interface ContactProps {
-  onNavigateHome: () => void;
-  onNavigateToAbout: () => void;
-  onNavigateToProjects: () => void;
-}
+const Contact: React.FC = () => {
+  usePageMetadata(
+    'Contact | Edward Tang',
+    'Contact Edward Tang about software development, product design, and collaboration opportunities.',
+    '/contact'
+  );
 
-const Contact: React.FC<ContactProps> = ({ onNavigateHome, onNavigateToAbout, onNavigateToProjects }) => {
   // Use staggered fade-in for each section
 
   const contactContent = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
 
   return (
-    <div className="app">
+    <div className="app contact-page">
       {/* Header with Navigation */}
       <header className="header">
         <div className="header-content">
@@ -26,17 +28,17 @@ const Contact: React.FC<ContactProps> = ({ onNavigateHome, onNavigateToAbout, on
           {/* Right Side - Navigation */}
           <div className="header-right">
             <nav className="nav-links">
-              <button onClick={onNavigateHome} className="nav-button">Home</button>
-              <button onClick={onNavigateToAbout} className="nav-button">About</button>
-              <button onClick={onNavigateToProjects} className="nav-button">Projects</button>
-              <button className="nav-button active">Contact</button>
+              <NavLink to="/" end className="nav-button">Home</NavLink>
+              <NavLink to="/about" className="nav-button">About</NavLink>
+              <NavLink to="/projects" className="nav-button">Projects</NavLink>
+              <NavLink to="/contact" className="nav-button">Contact</NavLink>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="main-content">
+      <main className="main-content">
         <div className="contact-wrapper">
           {/* Contact Content */}
           <div 
@@ -62,10 +64,21 @@ const Contact: React.FC<ContactProps> = ({ onNavigateHome, onNavigateToAbout, on
               <p className="contact-text">
                 Feel free to reach out if you'd like to connect or have any questions about my work.
               </p>
+              <div className="contact-actions">
+                <a className="contact-primary" href="mailto:e56tang@uwaterloo.ca">
+                  Email Edward
+                </a>
+                <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">
+                  LinkedIn ↗
+                </a>
+                <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">
+                  GitHub ↗
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  height: 100dvh;
   padding: clamp(1rem, 5vw, 2rem);
   padding-top: clamp(250px, calc(230px + 5vw), 280px); /* 230px margin + responsive padding */
   overflow: hidden;
@@ -225,7 +226,7 @@
   }
 
   .links-section {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 3;
   }
 

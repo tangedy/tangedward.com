@@ -1,6 +1,8 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './Projects.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
+import { usePageMetadata } from './hooks/usePageMetadata';
 
 interface Project {
   id: number;
@@ -44,18 +46,19 @@ const projects: Project[] = [
   }
 ];
 
-interface ProjectsProps {
-  onNavigateHome: () => void;
-  onNavigateToAbout: () => void;
-}
+const Projects: React.FC = () => {
+  usePageMetadata(
+    'Projects | Edward Tang',
+    'Selected software, product design, and AI projects by Edward Tang.',
+    '/projects'
+  );
 
-const Projects: React.FC<ProjectsProps> = ({ onNavigateHome, onNavigateToAbout }) => {
   // Use staggered fade-in for each section
   const projectsTitle = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
   const projectsList = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
 
   return (
-    <div className="app">
+    <div className="app projects-page">
       {/* Header with Navigation */}
       <header className="header">
         <div className="header-content">
@@ -67,17 +70,17 @@ const Projects: React.FC<ProjectsProps> = ({ onNavigateHome, onNavigateToAbout }
           {/* Right Side - Navigation */}
           <div className="header-right">
             <nav className="nav-links">
-              <button onClick={onNavigateHome} className="nav-button">Home</button>
-              <button onClick={onNavigateToAbout} className="nav-button">About</button>
-              <button className="nav-button active">Projects</button>
-              {/* <button className="nav-button">Contact</button> */}
+              <NavLink to="/" end className="nav-button">Home</NavLink>
+              <NavLink to="/about" className="nav-button">About</NavLink>
+              <NavLink to="/projects" className="nav-button">Projects</NavLink>
+              <NavLink to="/contact" className="nav-button">Contact</NavLink>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="main-content">
+      <main className="main-content">
         <div className="projects-wrapper">
           {/* Page Title */}
           <div 
@@ -146,7 +149,7 @@ const Projects: React.FC<ProjectsProps> = ({ onNavigateHome, onNavigateToAbout }
             ))}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

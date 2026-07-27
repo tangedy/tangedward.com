@@ -30,6 +30,7 @@ export const useStaggeredFadeIn = <T extends HTMLElement>(
   useEffect(() => {
     const element = ref.current;
     if (!element || hasAnimated) return;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -37,7 +38,7 @@ export const useStaggeredFadeIn = <T extends HTMLElement>(
           // Add staggered delay based on element index
           const staggeredDelay = index * delay;
           
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             setIsVisible(true);
             setHasAnimated(true);
           }, staggeredDelay);
@@ -55,6 +56,9 @@ export const useStaggeredFadeIn = <T extends HTMLElement>(
     observer.observe(element);
 
     return () => {
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
       if (element) {
         observer.unobserve(element);
       }
