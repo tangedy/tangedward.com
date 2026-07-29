@@ -84,15 +84,15 @@ const Projects: React.FC = () => {
       {/* Main Content */}
       <main className="main-content">
         <div className="projects-wrapper">
-          {/* Page Title */}
-          <div 
-            ref={projectsTitle.ref}
-            className={`projects-title fade-in-element ${projectsTitle.isVisible ? 'visible' : ''}`}
-          >
-            <h1>selected work</h1>
-          </div>
-
           <div className="projects-layout">
+            {/* Page Title */}
+            <div 
+              ref={projectsTitle.ref}
+              className={`projects-title fade-in-element ${projectsTitle.isVisible ? 'visible' : ''}`}
+            >
+              <h1>selected work</h1>
+            </div>
+
             <article
               ref={projectDetail.ref}
               className={`project-detail fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}

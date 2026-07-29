@@ -1,7 +1,8 @@
 /* Projects Page */
 .projects-page .main-content {
   align-items: flex-start;
-  padding-top: var(--header-safe-offset);
+  /* About-equivalent spacing plus a little extra breathing room. */
+  padding-top: calc(clamp(5.5rem, 13vh, 8rem) + clamp(1rem, 3vw, 1.5rem) + 1rem);
   padding-bottom: clamp(0.75rem, 2vh, 2rem);
 }
 
@@ -26,11 +27,20 @@
 .projects-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.65fr) minmax(240px, 0.65fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-areas:
+    "title selector"
+    "detail selector";
+  column-gap: clamp(2rem, 5vw, 5rem);
+  row-gap: clamp(0.75rem, 2vh, 1.25rem);
   align-items: start;
 }
 
+.projects-title {
+  grid-area: title;
+}
+
 .project-detail {
+  grid-area: detail;
   min-width: 0;
   display: grid;
   gap: clamp(0.75rem, 2vh, 1.25rem);
@@ -146,6 +156,7 @@
 }
 
 .projects-selector {
+  grid-area: selector;
   width: 100%;
   max-width: 340px;
   justify-self: end;
@@ -244,7 +255,7 @@
 
 @media (min-width: 768px) and (max-height: 760px) {
   .projects-page .main-content {
-    padding-top: var(--header-safe-offset);
+    padding-top: calc(clamp(5.5rem, 13vh, 8rem) + clamp(1rem, 3vw, 1.5rem) + 1rem);
     padding-bottom: 0.75rem;
   }
 
@@ -284,6 +295,10 @@
 
   .projects-layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "detail"
+      "selector";
     gap: 2rem;
   }
 
