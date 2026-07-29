@@ -141,7 +141,6 @@ function About() {
               <NavLink to="/" end className="nav-button">Home</NavLink>
               <NavLink to="/about" className="nav-button">About</NavLink>
               <NavLink to="/projects" className="nav-button">Projects</NavLink>
-              <NavLink to="/contact" className="nav-button">Contact</NavLink>
             </nav>
           </div>
         </div>

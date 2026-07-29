@@ -16,7 +16,6 @@ The development site runs at `http://localhost:3000`.
 - `/` - Home
 - `/about` - Background, skills, and experience
 - `/projects` - Selected work
-- `/contact` - Contact links
 
 ## Validation
 

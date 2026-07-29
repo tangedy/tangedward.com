@@ -4,7 +4,7 @@
 
 /* Contact Wrapper */
 .contact-wrapper {
-  max-width: 1120px;
+  max-width: var(--page-max-width);
   width: 100%;
   margin: 0 auto;
  /* padding: clamp(1rem, 5vw, 2rem);*/
@@ -137,8 +137,7 @@
 /* Large screens (1200px+) */
 @media (min-width: 1200px) {
   .contact-wrapper {
-    max-width: 1200px;
-    padding: 2rem;
+    max-width: var(--page-max-width);
   }
   
   .contact-content {
@@ -149,8 +148,7 @@
 /* Medium screens (768px - 1199px) */
 @media (min-width: 768px) and (max-width: 1199px) {
   .contact-wrapper {
-    max-width: 90%;
-    padding: clamp(1.5rem, 4vw, 2rem);
+    max-width: var(--page-max-width);
   }
   
   .contact-content {
@@ -185,7 +183,7 @@
 /* Extra small screens (up to 480px) */
 @media (max-width: 480px) {
   .contact-wrapper {
-    padding: clamp(0.75rem, 3vw, 1rem);
+    padding: 0;
   }
   
   .contact-content {

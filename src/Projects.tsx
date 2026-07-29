@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Projects.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
@@ -47,15 +47,18 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
+  const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
+  const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
+
   usePageMetadata(
     'Projects | Edward Tang',
     'Selected software, product design, and AI projects by Edward Tang.',
     '/projects'
   );
 
-  // Use staggered fade-in for each section
   const projectsTitle = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
-  const projectsList = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
+  const projectDetail = useStaggeredFadeIn<HTMLElement>(3, { delay: 200 });
+  const projectsList = useStaggeredFadeIn<HTMLElement>(4, { delay: 200 });
 
   return (
     <div className="app projects-page">
@@ -73,7 +76,6 @@ const Projects: React.FC = () => {
               <NavLink to="/" end className="nav-button">Home</NavLink>
               <NavLink to="/about" className="nav-button">About</NavLink>
               <NavLink to="/projects" className="nav-button">Projects</NavLink>
-              <NavLink to="/contact" className="nav-button">Contact</NavLink>
             </nav>
           </div>
         </div>
@@ -90,63 +92,77 @@ const Projects: React.FC = () => {
             <h1>selected work</h1>
           </div>
 
-          {/* Projects Introduction */}
-       
-          {/* Projects List */}
-          <div 
-            ref={projectsList.ref}
-            className={`projects-list fade-in-element ${projectsList.isVisible ? 'visible' : ''}`}
-          >
-            {projects.map((project) => (
-              <div key={project.id} className="project-item">
-                {/* Project Image */}
-                <div className="project-image">
-                  {project.imageUrl ? (
-                    <img src={project.imageUrl} alt={project.title} />
-                  ) : (
-                    <span>Project Image</span>
-                  )}
+          <div className="projects-layout">
+            <article
+              ref={projectDetail.ref}
+              className={`project-detail fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
+              aria-live="polite"
+            >
+              <div className="project-image" key={`${selectedProject.id}-image`}>
+                {selectedProject.imageUrl ? (
+                  <img src={selectedProject.imageUrl} alt={`${selectedProject.title} project preview`} />
+                ) : (
+                  <span>Project Image</span>
+                )}
+              </div>
+
+              <div className="project-content" key={`${selectedProject.id}-content`}>
+                <div className="project-heading">
+                  <div>
+                    <span className="project-year">{selectedProject.year}</span>
+                    <h2>{selectedProject.title}</h2>
+                  </div>
+
+                  <div className="project-links">
+                    {selectedProject.liveUrl && (
+                      <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+                        View Live ↗
+                      </a>
+                    )}
+                    {selectedProject.githubUrl && (
+                      <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+                        View Code ↗
+                      </a>
+                    )}
+                  </div>
                 </div>
-                
-                {/* Project Content */}
-                <div className="project-content">
-                  {/* Project Header */}
-                  <div className="project-header">
-                    <div className="project-title-section">
-                      <h2>{project.title}</h2>
-                      <span className="project-year">{project.year}</span>
-                    </div>
-                    
-                    <div className="project-links">
-                      {project.liveUrl && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                          View Live
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                          View Code
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Project Description */}
-                  <div className="project-description">
-                    <p>{project.description}</p>
-                  </div>
-                  
-                  {/* Project Technologies */}
-                  <div className="project-technologies">
-                    {project.technologies.map((tech, techIndex) => (
-                      <span key={techIndex} className="tech-tag">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+
+                <p className="project-description">{selectedProject.description}</p>
+
+                <div className="project-technologies" aria-label="Technologies used">
+                  {selectedProject.technologies.map((technology) => (
+                    <span key={technology} className="tech-tag">{technology}</span>
+                  ))}
                 </div>
               </div>
-            ))}
+            </article>
+
+            <aside
+              ref={projectsList.ref}
+              className={`projects-selector fade-in-element ${projectsList.isVisible ? 'visible' : ''}`}
+              aria-label="Select a project"
+            >
+              <h2>Projects</h2>
+              <div className="projects-list">
+                {projects.map((project, index) => (
+                  <React.Fragment key={project.id}>
+                    <button
+                      type="button"
+                      className={`project-selector-item ${project.id === selectedProject.id ? 'active' : ''}`}
+                      onClick={() => setSelectedProjectId(project.id)}
+                      aria-pressed={project.id === selectedProject.id}
+                    >
+                      <span className="project-selector-content">
+                        <span className="project-selector-title">{project.title}</span>
+                        <span className="project-selector-summary">{project.technologies.join(', ')}</span>
+                      </span>
+                      <span className="project-selector-date">{project.year}</span>
+                    </button>
+                    {index < projects.length - 1 && <div className="project-divider" />}
+                  </React.Fragment>
+                ))}
+              </div>
+            </aside>
           </div>
         </div>
       </main>

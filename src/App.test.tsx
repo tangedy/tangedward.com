@@ -21,13 +21,22 @@ test('navigates to projects with a shareable route', () => {
   expect(document.title).toBe('Projects | Edward Tang');
 });
 
-test('renders a direct email action on the contact route', () => {
+test('keeps the contact page hidden', () => {
   renderApp('/contact');
 
-  expect(screen.getByRole('link', { name: 'Email Edward' })).toHaveAttribute(
-    'href',
-    'mailto:e56tang@uwaterloo.ca'
-  );
+  expect(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Contact' })).not.toBeInTheDocument();
+});
+
+test('displays the project selected from the project list', () => {
+  renderApp('/projects');
+
+  const recipeRadarSelector = screen.getByRole('button', { name: /recipe radar/i });
+  fireEvent.click(recipeRadarSelector);
+
+  expect(screen.getByRole('heading', { name: 'Recipe Radar' })).toBeInTheDocument();
+  expect(screen.getByAltText('Recipe Radar project preview')).toBeInTheDocument();
+  expect(recipeRadarSelector).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('opens and dismisses experience details from the keyboard', () => {

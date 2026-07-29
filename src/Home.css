@@ -10,7 +10,8 @@
   align-items: center;
   height: 100vh;
   height: 100dvh;
-  padding: clamp(1rem, 5vw, 2rem);
+  padding-inline: var(--page-gutter);
+  padding-bottom: var(--page-gutter);
   padding-top: clamp(250px, calc(230px + 5vw), 280px); /* 230px margin + responsive padding */
   overflow: hidden;
 }
@@ -20,7 +21,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto auto;
   gap: clamp(1.5rem, 4vw, 3rem);
-  max-width: 1120px;
+  max-width: var(--page-max-width);
   width: 100%;
   position: relative;
   margin: 0 auto;
@@ -176,12 +177,10 @@
 /* Large screens (1200px+) */
 @media (min-width: 1200px) {
   .content-wrapper {
-    max-width: 1200px;
     gap: 3rem;
   }
   
   .main-content {
-    padding: 2rem;
     padding-top: 250px; /* 230px margin + 20px padding */
   }
 }
@@ -189,12 +188,10 @@
 /* Medium screens (768px - 1199px) */
 @media (min-width: 768px) and (max-width: 1199px) {
   .content-wrapper {
-    max-width: 90%;
     gap: clamp(2rem, 4vw, 3rem);
   }
   
   .main-content {
-    padding: clamp(1.5rem, 4vw, 2rem);
     padding-top: clamp(240px, calc(230px + 4vw), 260px);
   }
 }
@@ -252,7 +249,6 @@
 /* Extra small screens (up to 480px) */
 @media (max-width: 480px) {
   .main-content {
-    padding: clamp(0.75rem, 3vw, 1rem);
     padding-top: clamp(180px, calc(160px + 5vw), 200px);
   }
   

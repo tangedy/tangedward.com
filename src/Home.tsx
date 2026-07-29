@@ -22,7 +22,7 @@ function Home() {
     const summaryText = useStaggeredFadeIn<HTMLDivElement>(6, { delay: 200 });
     const linksHeading = useStaggeredFadeIn<HTMLHeadingElement>(7, { delay: 200 });
     const linksList = useStaggeredFadeIn<HTMLDivElement>(8, { delay: 200 });
-    const footerCredit = useStaggeredFadeIn<HTMLDivElement>(9, { delay: 200 });
+    const footerCredit = useStaggeredFadeIn<HTMLDivElement>(9, { delay: 200, rootMargin: '0px' });
     return (
       <div className="app home-page">
           {/* Header with Navigation and Welcome Text */}
@@ -45,7 +45,6 @@ function Home() {
                   <NavLink to="/" end className="nav-button">Home</NavLink>
                   <NavLink to="/about" className="nav-button">About</NavLink>
                   <NavLink to="/projects" className="nav-button">Projects</NavLink>
-                  <NavLink to="/contact" className="nav-button">Contact</NavLink>
                 </nav>
               </div>
             </div>

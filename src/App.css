@@ -31,6 +31,12 @@
 }
 
 /* Reset and base styles */
+:root {
+  --page-max-width: 1200px;
+  --page-gutter: clamp(1rem, 3vw, 2rem);
+  --header-safe-offset: 7.5rem;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -67,14 +73,15 @@ body {
   right: 0;
   z-index: 100;
   backdrop-filter: blur(10px);
-  padding: clamp(1rem, 3vw, 2rem);
+  padding-block: clamp(1rem, 3vw, 2rem);
+  padding-inline: var(--page-gutter);
 }
 
 .header-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(1rem, 3vw, 2rem);
-  max-width: 1200px;
+  max-width: var(--page-max-width);
   margin: 0 auto;
   align-items: center;
 }
@@ -115,6 +122,10 @@ body {
 
 .nav-links a:hover {
   color: #666;
+}
+
+.nav-links > :last-child {
+  padding-right: 0;
 }
 
 .nav-button {
@@ -184,6 +195,10 @@ button:focus-visible {
 
 /* Extra small screens (up to 480px) */
 @media (max-width: 480px) {
+  :root {
+    --page-gutter: clamp(0.75rem, 3vw, 1rem);
+  }
+
   .nav-links {
     gap: clamp(0.5rem, 1.5vw, 0.75rem);
   }
@@ -193,6 +208,6 @@ button:focus-visible {
   }
   
   .header {
-    padding: clamp(0.75rem, 2vw, 1rem);
+    padding-block: clamp(0.75rem, 2vw, 1rem);
   }
 } 

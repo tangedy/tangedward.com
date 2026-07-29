@@ -7,10 +7,9 @@
 }
 
 .about-wrapper {
-  max-width: 1120px;
+  max-width: var(--page-max-width);
   width: 100%;
   margin: 0 auto;
-  padding: clamp(1rem, 5vw, 2rem);
   padding-top: clamp(20px, calc(30px + 1vw), 50px); /* Reduced padding for smaller header margin */
   display: grid;
   gap: clamp(1rem, 3vw, 1.5rem); /* Tighter gap for better space usage */
@@ -192,9 +191,7 @@
 /* Responsive Breakpoints - Same as main app */
 @media (min-width: 1200px) {
   .about-wrapper {
-    max-width: 1200px;
     gap: 1.5rem; /* Reduced for better space usage */
-    padding: 2rem;
     padding-top: 0px; /* Drastically reduced padding */
   }
   
@@ -207,9 +204,7 @@
 
 @media (min-width: 768px) and (max-width: 1199px) {
   .about-wrapper {
-    max-width: 90%;
     gap: clamp(1rem, 3vw, 1.5rem); /* Tighter spacing */
-    padding: clamp(1.5rem, 4vw, 2rem);
     padding-top: clamp(80px, calc(70px + 2vw), 100px); /* Drastically reduced padding */
   }
 }
@@ -247,7 +242,6 @@
 
 @media (max-width: 480px) {
   .about-wrapper {
-    padding: clamp(0.75rem, 3vw, 1rem);
     padding-top: clamp(60px, calc(50px + 2vw), 80px); /* Drastically reduced padding */
     gap: clamp(0.5rem, 1.5vw, 0.75rem); /* Much tighter spacing */
   }
