@@ -37,6 +37,16 @@
   --header-safe-offset: 7.5rem;
 }
 
+@media (min-width: 768px) {
+  html {
+    font-size: 90%;
+  }
+
+  :root {
+    --page-max-width: 1080px;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;

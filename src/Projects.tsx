@@ -100,7 +100,13 @@ const Projects: React.FC = () => {
             >
               <div className="project-image" key={`${selectedProject.id}-image`}>
                 {selectedProject.imageUrl ? (
-                  <img src={selectedProject.imageUrl} alt={`${selectedProject.title} project preview`} />
+                  <img
+                    src={selectedProject.imageUrl}
+                    alt={`${selectedProject.title} project preview`}
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                  />
                 ) : (
                   <span>Project Image</span>
                 )}
