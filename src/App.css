@@ -37,6 +37,17 @@
   --header-safe-offset: 7.5rem;
 }
 
+/*
+ * Desktop 90% visual scale
+ * ------------------------
+ * This approximates Chrome's 90% browser zoom without using CSS `zoom` or a
+ * transform, both of which can interfere with fixed positioning and viewport
+ * calculations. Reducing the root font size scales rem-based type and spacing;
+ * reducing 1200px to 1080px scales the shared content width by the same 10%.
+ *
+ * To restore the original 100% sizing, remove this entire media query. The
+ * default 16px browser font size and the 1200px value above will take over.
+ */
 @media (min-width: 768px) {
   html {
     font-size: 90%;
