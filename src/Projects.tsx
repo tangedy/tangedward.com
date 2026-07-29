@@ -17,6 +17,13 @@ interface Project {
 
 const projects: Project[] = [
   {
+    id: 4,
+    title: "MinimalFinance",
+    description: "A privacy-focused iOS 17 personal-finance application supporting bank statement imports, spending analytics, recurring expense detection, and transaction categorization.",
+    technologies: ["Swift", "SwiftUI", "SwiftData", "Swift Charts", "XCTest", "GitHub Actions"],
+    year: "2026"
+  },
+  {
     id: 1,
     title: "Moti",
     description: "A web app that takes you from vague goal to concrete plan. You input what you want to achieve, and it guides you through a consultation process to clarify exactly what you want, the logistics involved, and creates a time-bound action plan with phases and specific tasks.",
