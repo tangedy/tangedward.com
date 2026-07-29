@@ -46,6 +46,25 @@
   gap: clamp(0.75rem, 2vh, 1.25rem);
 }
 
+.project-detail.portrait-project {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 3fr);
+  align-items: center;
+  column-gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.portrait-project .project-image {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
+  justify-self: stretch;
+  overflow: visible;
+}
+
+.portrait-project .project-image img {
+  height: auto;
+}
+
 .project-image {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -304,6 +323,14 @@
 
   .project-image {
     max-height: none;
+  }
+
+  .project-detail.portrait-project {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-project .project-image {
+    width: min(70vw, 280px);
   }
 
   .projects-selector {

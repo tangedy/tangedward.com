@@ -21,7 +21,8 @@ const projects: Project[] = [
     title: "MinimalFinance",
     description: "A privacy-focused iOS 17 personal-finance application supporting bank statement imports, spending analytics, recurring expense detection, and transaction categorization.",
     technologies: ["Swift", "SwiftUI", "SwiftData", "Swift Charts", "XCTest", "GitHub Actions"],
-    year: "2026"
+    year: "2026",
+    imageUrl: "/project assets/MinimalFinance.png"
   },
   {
     id: 1,
@@ -102,7 +103,7 @@ const Projects: React.FC = () => {
 
             <article
               ref={projectDetail.ref}
-              className={`project-detail fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
+              className={`project-detail ${selectedProject.id === 4 ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
               aria-live="polite"
             >
               <div className="project-image" key={`${selectedProject.id}-image`}>

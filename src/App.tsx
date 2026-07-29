@@ -6,6 +6,7 @@ import Home from './Home';
 import Projects from './Projects';
 
 const projectImageUrls = [
+  '/project assets/MinimalFinance.png',
   '/project assets/MOTI.png',
   '/project assets/Recipe Radar.png',
   '/project assets/Pixelize.png',
