@@ -14,6 +14,13 @@ const renderApp = (path = '/') => render(
 
 beforeEach(() => {
   window.localStorage.removeItem('home-greeting');
+  jest.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => undefined);
+  jest.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+  jest.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 test('navigates to projects with a shareable route', () => {
@@ -80,10 +87,11 @@ test('displays the project selected from the project list', () => {
 test('displays the MLee portfolio project beneath MinimalFinance', () => {
   renderApp('/projects');
 
-  const mleeVideoPreload = document.head.querySelector(
-    'link[rel="preload"][href$="matthewproject2-fast.mp4"]'
-  );
-  expect(mleeVideoPreload).toHaveAttribute('as', 'video');
+  const preloadedVideo = screen.getByLabelText('MLee Portfolio Site project preview');
+  expect(preloadedVideo).toHaveAttribute('src', '/project assets/matthewproject2-fast.mp4');
+  expect(preloadedVideo).toHaveAttribute('preload', 'auto');
+  expect(preloadedVideo).not.toBeVisible();
+  expect(HTMLMediaElement.prototype.load).toHaveBeenCalled();
 
   const projectSelectors = screen.getAllByRole('button', { name: /minimalfinance|mlee portfolio site/i });
   expect(projectSelectors[0]).toHaveAccessibleName(/minimalfinance/i);
@@ -93,6 +101,8 @@ test('displays the MLee portfolio project beneath MinimalFinance', () => {
 
   expect(screen.getByRole('heading', { name: 'MLee Portfolio Site' })).toBeInTheDocument();
   const firstVideo = screen.getByLabelText('MLee Portfolio Site project preview');
+  expect(firstVideo).toBe(preloadedVideo);
+  expect(firstVideo).toBeVisible();
   expect(firstVideo).toHaveAttribute('src', '/project assets/matthewproject2-fast.mp4');
   expect(firstVideo).toHaveAttribute('poster', '/project assets/matthewproject2-poster.webp');
   expect(firstVideo).toHaveAttribute('autoplay');
@@ -105,7 +115,7 @@ test('displays the MLee portfolio project beneath MinimalFinance', () => {
   fireEvent.click(projectSelectors[1]);
 
   const restartedVideo = screen.getByLabelText('MLee Portfolio Site project preview');
-  expect(restartedVideo).not.toBe(firstVideo);
+  expect(restartedVideo).toBe(firstVideo);
   expect(restartedVideo).toHaveProperty('currentTime', 0);
 });
 

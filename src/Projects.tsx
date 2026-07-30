@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Projects.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
@@ -71,24 +71,26 @@ const projects: Project[] = [
 
 const Projects: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
+  const mleeVideoRef = useRef<HTMLVideoElement>(null);
   const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
+  const isMleeSelected = selectedProject.videoUrl === mleeVideoUrl;
 
   useEffect(() => {
-    const preloadLinks = [
-      { href: mleePosterUrl, as: 'image', type: 'image/webp' },
-      { href: mleeVideoUrl, as: 'video', type: 'video/mp4' },
-    ].map(({ href, as, type }) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.href = href;
-      link.as = as;
-      link.type = type;
-      document.head.appendChild(link);
-      return link;
-    });
-
-    return () => preloadLinks.forEach((link) => link.remove());
+    mleeVideoRef.current?.load();
   }, []);
+
+  useEffect(() => {
+    const video = mleeVideoRef.current;
+    if (!video) return;
+
+    video.currentTime = 0;
+    if (isMleeSelected) {
+      const playback = video.play();
+      playback?.catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  }, [isMleeSelected]);
 
   usePageMetadata(
     'Projects | Edward Tang',
@@ -138,32 +140,29 @@ const Projects: React.FC = () => {
               className={`project-detail ${selectedProject.id === 4 ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
               aria-live="polite"
             >
-              <div className="project-image" key={`${selectedProject.id}-image`}>
-                {selectedProject.videoUrl ? (
-                  <video
-                    src={selectedProject.videoUrl}
-                    poster={selectedProject.imageUrl}
-                    aria-label={`${selectedProject.title} project preview`}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    onLoadedMetadata={(event) => {
-                      event.currentTarget.currentTime = 0;
-                    }}
-                  />
-                ) : selectedProject.imageUrl ? (
+              <div className={`project-image ${isMleeSelected ? 'video-project' : ''}`}>
+                <video
+                  ref={mleeVideoRef}
+                  src={mleeVideoUrl}
+                  poster={mleePosterUrl}
+                  aria-label="MLee Portfolio Site project preview"
+                  autoPlay={isMleeSelected}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  hidden={!isMleeSelected}
+                />
+                {!isMleeSelected && selectedProject.imageUrl ? (
                   <img
+                    key={`${selectedProject.id}-image`}
                     src={selectedProject.imageUrl}
                     alt={`${selectedProject.title} project preview`}
                     loading="eager"
                     decoding="async"
                     fetchPriority="high"
                   />
-                ) : (
-                  <span>Project Image</span>
-                )}
+                ) : !isMleeSelected ? <span key={`${selectedProject.id}-image`}>Project Image</span> : null}
               </div>
 
               <div className="project-content" key={`${selectedProject.id}-content`}>

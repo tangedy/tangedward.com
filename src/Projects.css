@@ -77,7 +77,10 @@
   overflow: hidden;
   color: var(--color-light);
   font-family: 'DM Sans', sans-serif;
-  animation: projectSwap 0.8s ease;
+}
+
+.project-image.video-project {
+  max-height: none;
 }
 
 .project-image img,
@@ -89,6 +92,16 @@
 
 .project-image video {
   display: block;
+}
+
+.project-image video[hidden] {
+  display: none;
+}
+
+.project-image img,
+.project-image video:not([hidden]),
+.project-image > span {
+  animation: projectSwap 0.8s ease;
 }
 
 .project-content {
