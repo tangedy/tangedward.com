@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
@@ -37,6 +37,57 @@ test('displays the project selected from the project list', () => {
   expect(screen.getByRole('heading', { name: 'Recipe Radar' })).toBeInTheDocument();
   expect(screen.getByAltText('Recipe Radar project preview')).toBeInTheDocument();
   expect(recipeRadarSelector).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('displays the MLee portfolio project beneath MinimalFinance', async () => {
+  const originalCreateObjectURL = URL.createObjectURL;
+  const originalRevokeObjectURL = URL.revokeObjectURL;
+  const originalFetch = global.fetch;
+  const createObjectURL = jest.fn()
+    .mockReturnValueOnce('blob:mlee-first-view')
+    .mockReturnValueOnce('blob:mlee-second-view');
+  const revokeObjectURL = jest.fn();
+
+  Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: createObjectURL });
+  Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: revokeObjectURL });
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    blob: async () => new Blob(['mlee-preview']),
+  }) as jest.Mock;
+
+  const view = renderApp('/projects');
+
+  const projectSelectors = screen.getAllByRole('button', { name: /minimalfinance|mlee portfolio site/i });
+  expect(projectSelectors[0]).toHaveAccessibleName(/minimalfinance/i);
+  expect(projectSelectors[1]).toHaveAccessibleName(/mlee portfolio site/i);
+
+  fireEvent.click(projectSelectors[1]);
+
+  expect(screen.getByRole('heading', { name: 'MLee Portfolio Site' })).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByAltText('MLee Portfolio Site project preview')).toHaveAttribute(
+      'src',
+      'blob:mlee-first-view'
+    );
+  });
+  expect(screen.getByText('React, Vite, TypeScript, Tailwind')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', { name: /recipe radar/i }));
+  fireEvent.click(projectSelectors[1]);
+
+  await waitFor(() => {
+    expect(screen.getByAltText('MLee Portfolio Site project preview')).toHaveAttribute(
+      'src',
+      'blob:mlee-second-view'
+    );
+  });
+  expect(createObjectURL).toHaveBeenCalledTimes(2);
+  expect(revokeObjectURL).toHaveBeenCalledWith('blob:mlee-first-view');
+
+  view.unmount();
+  Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: originalCreateObjectURL });
+  Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: originalRevokeObjectURL });
+  global.fetch = originalFetch;
 });
 
 test('opens and dismisses experience details from the keyboard', () => {
