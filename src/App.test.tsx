@@ -41,6 +41,31 @@ test('alternates the home greeting on each visit', () => {
   expect(screen.getByRole('heading', { name: 'Huān-yíng!' })).toBeInTheDocument();
 });
 
+test('unlocks the easter egg by typing the secret phrase', () => {
+  renderApp('/about');
+
+  'easter egg'.split('').forEach((key) => fireEvent.keyDown(window, { key }));
+
+  expect(screen.getByRole('heading', { name: 'A crow has hatched!' })).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: 'An 8-bit crow dancing' })).toBeInTheDocument();
+  expect(document.title).toBe('A Secret Has Hatched | Edward Tang');
+});
+
+test('unlocks the easter egg without a space in the secret phrase', () => {
+  renderApp('/projects');
+
+  'easteregg'.split('').forEach((key) => fireEvent.keyDown(window, { key }));
+
+  expect(screen.getByRole('heading', { name: 'A crow has hatched!' })).toBeInTheDocument();
+});
+
+test('serves the easter egg at its direct route', () => {
+  renderApp('/easteregg');
+
+  expect(screen.getByRole('heading', { name: 'A crow has hatched!' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Back home' })).toHaveAttribute('href', '/');
+});
+
 test('displays the project selected from the project list', () => {
   renderApp('/projects');
 

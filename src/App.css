@@ -35,7 +35,7 @@
   --page-max-width: 1200px;
   --page-gutter: clamp(1rem, 3vw, 2rem);
   --header-safe-offset: 7.5rem;
-  --color-dark: #242323;
+  --color-dark: #372D2D;
   --color-light: #6B6363;
   --type-caption: clamp(0.75rem, 1.5vw, 0.8rem);
   --type-label: clamp(0.8rem, 2vw, 0.9rem);

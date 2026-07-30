@@ -1,0 +1,266 @@
+.easter-egg-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--page-gutter);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--color-dark);
+  font-family: 'Courier New', monospace;
+}
+
+.easter-back-link {
+  position: absolute;
+  top: var(--page-gutter);
+  left: var(--page-gutter);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-dark);
+  font-size: var(--type-label);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.easter-back-link:hover {
+  color: var(--color-light);
+}
+
+.easter-egg-content {
+  width: min(100%, 44rem);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.easter-egg-content h1 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(2rem, 7vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.crow-stage {
+  width: min(82vw, 28rem);
+  height: clamp(15rem, 42vw, 23rem);
+  margin-block: clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.pixel-crow {
+  width: 180px;
+  height: 190px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -105px;
+  margin-left: -90px;
+  z-index: 2;
+  animation: crow-dance 0.8s steps(2, end) infinite;
+  transform-origin: center bottom;
+}
+
+.crow-head,
+.crow-beak,
+.crow-body,
+.crow-wing,
+.crow-tail,
+.crow-leg,
+.crow-foot,
+.crow-eye {
+  position: absolute;
+  display: block;
+}
+
+.crow-head {
+  width: 64px;
+  height: 56px;
+  top: 18px;
+  left: 78px;
+  background: var(--color-dark);
+  box-shadow: -8px 8px 0 var(--color-dark);
+  animation: crow-head-bob 0.4s steps(2, end) infinite;
+}
+
+.crow-eye {
+  width: 3px;
+  height: 3px;
+  top: 17px;
+  right: 19px;
+  background: #f5f7f8;
+  box-shadow:
+    3px -3px 0 #f5f7f8,
+    6px -3px 0 #f5f7f8,
+    9px 0 0 #f5f7f8;
+}
+
+.crow-beak {
+  width: 28px;
+  height: 16px;
+  top: 38px;
+  left: 130px;
+  background: var(--color-light);
+  box-shadow: 8px 8px 0 -2px var(--color-light);
+}
+
+.crow-body {
+  width: 82px;
+  height: 88px;
+  top: 68px;
+  left: 54px;
+  background: var(--color-dark);
+  box-shadow: -16px 16px 0 -4px var(--color-dark);
+}
+
+.crow-wing {
+  width: 54px;
+  height: 64px;
+  top: 78px;
+  left: 42px;
+  z-index: 3;
+  background: var(--color-light);
+  box-shadow: -12px 16px 0 -2px var(--color-light);
+  transform-origin: top right;
+  animation: crow-wing-flap 0.4s steps(2, end) infinite;
+}
+
+.crow-tail {
+  width: 18px;
+  height: 50px;
+  top: 132px;
+  background: var(--color-dark);
+  transform-origin: top center;
+}
+
+.tail-one {
+  left: 58px;
+  transform: rotate(22deg);
+}
+
+.tail-two {
+  left: 80px;
+  transform: rotate(8deg);
+}
+
+.crow-leg {
+  width: 8px;
+  height: 32px;
+  top: 150px;
+  background: var(--color-light);
+  transform-origin: top center;
+}
+
+.leg-left {
+  left: 76px;
+  animation: crow-leg-left 0.8s steps(2, end) infinite;
+}
+
+.leg-right {
+  left: 112px;
+  animation: crow-leg-right 0.8s steps(2, end) infinite;
+}
+
+.crow-foot {
+  width: 26px;
+  height: 8px;
+  left: -8px;
+  bottom: -4px;
+  background: var(--color-light);
+}
+
+.crow-shadow {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  width: 132px;
+  height: 12px;
+  margin-left: -66px;
+  background: rgba(55, 45, 45, 0.16);
+  animation: crow-shadow-dance 0.8s steps(2, end) infinite;
+}
+
+.music-note {
+  position: absolute;
+  color: var(--color-light);
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  animation: music-note-rise 1.6s steps(4, end) infinite;
+}
+
+.note-one {
+  top: 24%;
+  left: 18%;
+}
+
+.note-two {
+  top: 18%;
+  right: 17%;
+  animation-delay: -0.8s;
+}
+
+@keyframes crow-dance {
+  0%, 100% { transform: translate(-8px, 0) rotate(-2deg); }
+  50% { transform: translate(8px, -12px) rotate(2deg); }
+}
+
+@keyframes crow-head-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes crow-wing-flap {
+  0%, 100% { transform: rotate(8deg); }
+  50% { transform: rotate(-30deg) translate(-8px, -4px); }
+}
+
+@keyframes crow-leg-left {
+  0%, 100% { transform: rotate(14deg); }
+  50% { transform: rotate(-18deg); }
+}
+
+@keyframes crow-leg-right {
+  0%, 100% { transform: rotate(-18deg); }
+  50% { transform: rotate(14deg); }
+}
+
+@keyframes crow-shadow-dance {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.72); opacity: 0.6; }
+}
+
+@keyframes music-note-rise {
+  0% { transform: translateY(20px); opacity: 0; }
+  25%, 75% { opacity: 1; }
+  100% { transform: translateY(-32px); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .easter-egg-page {
+    align-items: start;
+    padding-top: 6rem;
+  }
+
+  .crow-stage {
+    width: 100%;
+    height: 20rem;
+    margin-block: 1.5rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-crow,
+  .crow-head,
+  .crow-wing,
+  .crow-leg,
+  .crow-shadow,
+  .music-note {
+    animation: none;
+  }
+}
