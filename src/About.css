@@ -17,9 +17,9 @@
 
 /* About Title - Using existing name styles */
 .about-title h1 {
-  font-size: clamp(2rem, 5vw, 2.5rem); /* Same as english-name */
+  font-size: var(--type-heading);
   font-weight: 400;
-  color: #333; /* Same as english-name */
+  color: var(--color-dark);
   font-family: 'DM Sans', sans-serif;
   line-height: 1.24; /* Same as english-name */
   text-align: left;
@@ -32,8 +32,8 @@
 }
 
 .about-section h2 {
-  font-size: clamp(0.75rem, 2vw, 0.9rem);
-  color: #999;
+  font-size: var(--type-label);
+  color: var(--color-light);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 400;
@@ -41,9 +41,9 @@
 }
 
 .about-section p {
-  font-size: clamp(1rem, 4vw, 1.5rem); /* Same as summary-text */
+  font-size: var(--type-lead);
   line-height: 1.17; /* Same as summary-text */
-  color: #606060; /* Same as summary-text */
+  color: var(--color-light);
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; /* Same as summary-text */
   margin-bottom: clamp(0.5rem, 2vw, 1rem); /* Same as summary-text */
@@ -61,16 +61,16 @@
 }
 
 .skill-category h3 {
-  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Same as links-heading */
+  font-size: var(--type-lead);
   font-weight: 600; /* Same as links-heading */
-  color: #464040; /* Same as links-heading */
+  color: var(--color-dark);
   margin-bottom: clamp(0.25rem, 1vw, 0.5rem); /* Same as links-heading */
   font-family: 'DM Sans', sans-serif;
 }
 
 .skill-category p {
-  font-size: clamp(0.8rem, 2vw, 0.9rem); /* Same as links-list a */
-  color: #333; /* Same as links-list a */
+  font-size: var(--type-label);
+  color: var(--color-dark);
   font-family: 'inter', sans-serif; /* Same as links-list a */
   margin-bottom: 0;
   line-height: 1.4;
@@ -100,16 +100,16 @@
 }
 
 .experience-content h3 {
-  font-size: clamp(0.8rem, 2vw, 0.9rem); /* Same as links-list a */
+  font-size: var(--type-label);
   font-weight: 400; /* Same as links-list a */
-  color: #333; /* Same as links-list a */
+  color: var(--color-dark);
   margin-bottom: clamp(0.125rem, 0.5vw, 0.25rem);
   font-family: 'inter', sans-serif; /* Same as links-list a */
 }
 
 .experience-content p {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
-  color: #999; /* Same as footer-credit */
+  font-size: var(--type-caption);
+  color: var(--color-light);
   margin-bottom: 0;
   font-family: inherit;
 }
@@ -119,8 +119,8 @@
 }
 
 .experience-date span {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
-  color: #999; /* Same as footer-credit */
+  font-size: var(--type-caption);
+  color: var(--color-light);
   font-family: inherit;
   font-weight: 500;
 }
@@ -139,22 +139,22 @@
 
 /* Testimonial Section - Using summary label styling */
 .testimonial-right blockquote {
-  font-size: clamp(1rem, 4vw, 1.5rem); /* Same as summary-text */
+  font-size: var(--type-lead);
   line-height: 1.17; /* Same as summary-text */
-  color: #606060; /* Same as summary-text */
+  color: var(--color-light);
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; /* Same as summary-text */
   font-style: italic;
   margin: 0 0 clamp(0.5rem, 2vw, 1rem) 0;
   padding: clamp(0.5rem, 2vw, 1rem);
-  border-right: 2px solid #5a5858; /* Right border instead of left */
-  background: rgba(241, 241, 241, 0.2); /* More subtle background */
+  border-right: 2px solid var(--color-light);
+  background: rgba(241, 241, 241, 0.2);
   text-align: right;
 }
 
 .testimonial-right cite {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Same as footer-credit */
-  color: #999; /* Same as footer-credit */
+  font-size: var(--type-caption);
+  color: var(--color-light);
   font-style: normal;
   font-weight: normal;
   font-family: inherit;
@@ -180,7 +180,7 @@
   .testimonial-right blockquote {
     text-align: left;
     border-right: none;
-    border-left: 2px solid #5a5858;
+    border-left: 2px solid var(--color-light);
   }
   
   .testimonial-right cite {
@@ -232,7 +232,7 @@
   .testimonial-right blockquote {
     text-align: left;
     border-right: none;
-    border-left: 2px solid #5a5858;
+    border-left: 2px solid var(--color-light);
   }
   
   .testimonial-right cite {
@@ -375,8 +375,8 @@
   right: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
-  color: #999;
+  font-size: var(--type-heading);
+  color: var(--color-light);
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -391,7 +391,7 @@
 
 .modal-close:hover {
   background: rgba(0, 0, 0, 0.08);
-  color: #666;
+  color: var(--color-dark);
 }
 
 /* Modal Body */
@@ -405,26 +405,26 @@
 
 /* Modal Text Content */
 .modal-text h2 {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: var(--type-heading);
   font-weight: 400;
-  color: #464040;
+  color: var(--color-dark);
   font-family: 'DM Sans', sans-serif;
   line-height: 1.24;
   margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .modal-text h3 {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: var(--type-lead);
   font-weight: 600;
-  color: #333;
+  color: var(--color-dark);
   font-family: 'DM Sans', sans-serif;
   margin-bottom: clamp(0.25rem, 0.5vw, 0.5rem);
 }
 
 .modal-year {
   display: inline-block;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #999;
+  font-size: var(--type-caption);
+  color: var(--color-light);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 400;
@@ -436,9 +436,9 @@
 }
 
 .modal-text p {
-  font-size: clamp(1rem, 4vw, 1.5rem);
+  font-size: var(--type-lead);
   line-height: 1.17;
-  color: #606060;
+  color: var(--color-light);
   font-family: 'DM Sans', sans-serif;
   font-weight: 400;
   margin: 0;
@@ -462,8 +462,8 @@
 }
 
 .modal-image-caption {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #999;
+  font-size: var(--type-caption);
+  color: var(--color-light);
   font-family: inherit;
   text-align: right;
   margin: 0;
@@ -504,7 +504,7 @@
 
   .about-section p,
   .testimonial-right blockquote {
-    font-size: clamp(0.9rem, 2.8vh, 1.15rem);
+    font-size: var(--type-body);
     line-height: 1.2;
   }
 

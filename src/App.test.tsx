@@ -12,6 +12,10 @@ const renderApp = (path = '/') => render(
   </MemoryRouter>
 );
 
+beforeEach(() => {
+  window.localStorage.removeItem('home-greeting');
+});
+
 test('navigates to projects with a shareable route', () => {
   renderApp();
 
@@ -26,6 +30,15 @@ test('keeps the contact page hidden', () => {
 
   expect(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Contact' })).not.toBeInTheDocument();
+});
+
+test('alternates the home greeting on each visit', () => {
+  const firstVisit = renderApp();
+  expect(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
+  firstVisit.unmount();
+
+  renderApp();
+  expect(screen.getByRole('heading', { name: 'Huān-yíng!' })).toBeInTheDocument();
 });
 
 test('displays the project selected from the project list', () => {

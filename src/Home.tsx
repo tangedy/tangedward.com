@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './App.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 import './Home.css';
 
+const greetingStorageKey = 'home-greeting';
+
+const getNextGreeting = () => {
+  try {
+    return window.localStorage.getItem(greetingStorageKey) === 'Welcome!'
+      ? 'Huān-yíng!'
+      : 'Welcome!';
+  } catch {
+    return 'Welcome!';
+  }
+};
+
 function Home() {
+    const [greeting] = useState(getNextGreeting);
+
+    useEffect(() => {
+      try {
+        window.localStorage.setItem(greetingStorageKey, greeting);
+      } catch {
+        // The greeting still works when browser storage is unavailable.
+      }
+    }, [greeting]);
+
     usePageMetadata(
       'Edward Tang | Software Developer & Product Designer',
       'Edward Tang is a software developer and product designer building thoughtful digital and AI experiences.',
@@ -33,7 +55,7 @@ function Home() {
                 ref={headerLeft.ref}
                 className={`header-left fade-in-element ${headerLeft.isVisible ? 'visible' : ''}`}
               >
-                <h2 className="welcome-text">Welcome!</h2>
+                <h2 className="welcome-text">{greeting}</h2>
               </div>
               
               {/* Right Side - Navigation */}
@@ -98,16 +120,16 @@ function Home() {
                   ref={linksHeading.ref}
                   className={`links-heading fade-in-element ${linksHeading.isVisible ? 'visible' : ''}`}
                 >
-                  My Links
+                  MY LINKS
                 </h3>
                 <div 
                   ref={linksList.ref}
                   className={`links-list fade-in-element ${linksList.isVisible ? 'visible' : ''}`}
                 >
                   <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">linkedin.com/in/tanged   ↗</a>
-                  <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">github.com/tangedy        ↗</a>
                   <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">artstation.com/tangedy  ↗</a>
-                  <a href="mailto:e56tang@uwaterloo.ca">e56tang@uwaterloo.ca ↗</a>
+                  <a href="mailto:e56tang@uwaterloo.ca" target="_blank" rel="noopener noreferrer">e56tang@uwaterloo.ca ↗</a>
+                  <a href="https://github.com/tangedy">github.com/tangedy        ↗</a>
                 </div>
               </div>
     
