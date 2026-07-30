@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Projects.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
@@ -11,6 +11,7 @@ interface Project {
   technologies: string[];
   year: string;
   imageUrl?: string;
+  videoUrl?: string;
   liveUrl?: string;
   githubUrl?: string;
 }
@@ -30,7 +31,8 @@ const projects: Project[] = [
     description: "A responsive portfolio website built to present selected work and experience.",
     technologies: ["React", "Vite", "TypeScript", "Tailwind"],
     year: "2026",
-    imageUrl: "/project assets/matthewproject2-optimized.webp"
+    imageUrl: "/project assets/matthewproject2-poster.webp",
+    videoUrl: "/project assets/matthewproject2.mp4"
   },
   {
     id: 1,
@@ -62,66 +64,9 @@ const projects: Project[] = [
   }
 ];
 
-const mleePreviewUrl = '/project assets/matthewproject2-optimized.webp';
-let mleePreviewBlobPromise: Promise<Blob> | undefined;
-
-const loadMleePreviewBlob = () => {
-  if (!mleePreviewBlobPromise) {
-    mleePreviewBlobPromise = fetch(mleePreviewUrl)
-      .then((response) => {
-        if (!response.ok) throw new Error('Unable to load MLee project preview');
-        return response.blob();
-      })
-      .catch((error) => {
-        mleePreviewBlobPromise = undefined;
-        throw error;
-      });
-  }
-
-  return mleePreviewBlobPromise;
-};
-
 const Projects: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
-  const [animatedImageUrl, setAnimatedImageUrl] = useState<string>();
   const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
-
-  useEffect(() => {
-    if (typeof URL.createObjectURL === 'function') {
-      loadMleePreviewBlob().catch(() => undefined);
-    }
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!selectedProject.imageUrl?.endsWith('.webp')) return;
-    if (typeof URL.createObjectURL !== 'function') {
-      setAnimatedImageUrl(selectedProject.imageUrl);
-      return;
-    }
-
-    let isCurrentProject = true;
-    let objectUrl: string | undefined;
-    setAnimatedImageUrl(undefined);
-
-    loadMleePreviewBlob()
-      .then((blob) => {
-        if (!isCurrentProject) return;
-        objectUrl = URL.createObjectURL(blob);
-        setAnimatedImageUrl(objectUrl);
-      })
-      .catch(() => {
-        if (isCurrentProject) setAnimatedImageUrl(selectedProject.imageUrl);
-      });
-
-    return () => {
-      isCurrentProject = false;
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
-  }, [selectedProject.id, selectedProject.imageUrl]);
-
-  const projectImageUrl = selectedProject.imageUrl?.endsWith('.webp')
-    ? animatedImageUrl
-    : selectedProject.imageUrl;
 
   usePageMetadata(
     'Projects | Edward Tang',
@@ -172,9 +117,23 @@ const Projects: React.FC = () => {
               aria-live="polite"
             >
               <div className="project-image" key={`${selectedProject.id}-image`}>
-                {selectedProject.imageUrl ? (
+                {selectedProject.videoUrl ? (
+                  <video
+                    src={selectedProject.videoUrl}
+                    poster={selectedProject.imageUrl}
+                    aria-label={`${selectedProject.title} project preview`}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    onLoadedMetadata={(event) => {
+                      event.currentTarget.currentTime = 0;
+                    }}
+                  />
+                ) : selectedProject.imageUrl ? (
                   <img
-                    src={projectImageUrl}
+                    src={selectedProject.imageUrl}
                     alt={`${selectedProject.title} project preview`}
                     loading="eager"
                     decoding="async"
