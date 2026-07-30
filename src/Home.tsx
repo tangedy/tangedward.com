@@ -127,20 +127,16 @@ function Home() {
                   className={`links-list fade-in-element ${linksList.isVisible ? 'visible' : ''}`}
                 >
                   <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">
-                    <span>linkedin.com/in/tanged</span>
-                    <span className="external-arrow" aria-hidden="true" />
+                    linkedin.com/in/tanged ↗︎
                   </a>
                   <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">
-                    <span>artstation.com/tangedy</span>
-                    <span className="external-arrow" aria-hidden="true" />
+                    artstation.com/tangedy ↗︎
                   </a>
                   <a href="mailto:e56tang@uwaterloo.ca">
-                    <span>e56tang@uwaterloo.ca</span>
-                    <span className="external-arrow" aria-hidden="true" />
+                    e56tang@uwaterloo.ca ↗︎
                   </a>
                   <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">
-                    <span>github.com/tangedy</span>
-                    <span className="external-arrow" aria-hidden="true" />
+                    github.com/tangedy ↗︎
                   </a>
                 </div>
               </div>

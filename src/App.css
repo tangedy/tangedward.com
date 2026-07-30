@@ -188,38 +188,6 @@ button:focus-visible {
   font-weight: 500;
 }
 
-.external-arrow {
-  width: 0.75em;
-  height: 0.75em;
-  margin-left: 0.45em;
-  display: inline-block;
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.external-arrow::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0.4em;
-  height: 0.4em;
-  border-top: 1.5px solid currentColor;
-  border-right: 1.5px solid currentColor;
-}
-
-.external-arrow::after {
-  content: '';
-  position: absolute;
-  left: 0.05em;
-  bottom: 0.1em;
-  width: 0.78em;
-  height: 1.5px;
-  background: currentColor;
-  transform: rotate(-45deg);
-  transform-origin: left center;
-}
-
 
 
 /* =====================================
