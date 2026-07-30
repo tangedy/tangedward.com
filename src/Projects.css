@@ -308,10 +308,14 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 820px) {
   .projects-page .main-content {
-    padding-top: clamp(9rem, 30vw, 11rem);
-    padding-bottom: 2rem;
+    min-height: 100vh;
+    height: auto;
+    align-items: flex-start;
+    padding-top: 6.5rem;
+    padding-bottom: 2.5rem;
+    overflow: visible;
   }
 
   .projects-wrapper {
@@ -324,7 +328,7 @@
       "title"
       "detail"
       "selector";
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .project-image {
@@ -336,16 +340,40 @@
   }
 
   .portrait-project .project-image {
-    width: min(70vw, 280px);
+    width: min(78vw, 320px);
+    justify-self: center;
   }
 
   .projects-selector {
     max-width: none;
     justify-self: stretch;
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  .project-selector-item {
+    --hover-edge-overhang: 0px;
+    padding-inline: 0;
+  }
+
+  .project-selector-summary {
+    white-space: normal;
+  }
+
+  .project-description {
+    line-height: 1.5;
+  }
+
+  .project-technologies {
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    padding: 0.35rem 0.625rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .project-heading {
     align-items: flex-start;
     flex-direction: column;

@@ -156,12 +156,14 @@ const Projects: React.FC = () => {
                   <div className="project-links">
                     {selectedProject.liveUrl && (
                       <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                        View Live ↗
+                        <span>View Live</span>
+                        <span className="external-arrow" aria-hidden="true" />
                       </a>
                     )}
                     {selectedProject.githubUrl && (
                       <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                        View Code ↗
+                        <span>View Code</span>
+                        <span className="external-arrow" aria-hidden="true" />
                       </a>
                     )}
                   </div>

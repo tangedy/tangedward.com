@@ -110,7 +110,13 @@ function Home() {
                   ref={summaryText.ref}
                   className={`summary-text fade-in-element ${summaryText.isVisible ? 'visible' : ''}`}
                 >
-                  Edward Tang is a developer with a love<br/> for creating software both functional <br/> and aesthetically deliberate in design. <br/> <br/> He is curious about interactive software<br/>and ways to adopt new technology <br/> seamlessly into our every day lives. <br/><br/>Currently a student at <br/>the University of Waterloo.
+                  <p>
+                    Edward Tang is a developer with a love for creating software both functional and aesthetically deliberate in design.
+                  </p>
+                  <p>
+                    He is curious about interactive software and ways to adopt new technology seamlessly into our everyday lives.
+                  </p>
+                  <p>Currently a student at the University of Waterloo.</p>
                 </div>
               </div>
     
@@ -126,10 +132,22 @@ function Home() {
                   ref={linksList.ref}
                   className={`links-list fade-in-element ${linksList.isVisible ? 'visible' : ''}`}
                 >
-                  <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">linkedin.com/in/tanged   ↗</a>
-                  <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">artstation.com/tangedy  ↗</a>
-                  <a href="mailto:e56tang@uwaterloo.ca" target="_blank" rel="noopener noreferrer">e56tang@uwaterloo.ca ↗</a>
-                  <a href="https://github.com/tangedy">github.com/tangedy        ↗</a>
+                  <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">
+                    <span>linkedin.com/in/tanged</span>
+                    <span className="external-arrow" aria-hidden="true" />
+                  </a>
+                  <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">
+                    <span>artstation.com/tangedy</span>
+                    <span className="external-arrow" aria-hidden="true" />
+                  </a>
+                  <a href="mailto:e56tang@uwaterloo.ca">
+                    <span>e56tang@uwaterloo.ca</span>
+                    <span className="external-arrow" aria-hidden="true" />
+                  </a>
+                  <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">
+                    <span>github.com/tangedy</span>
+                    <span className="external-arrow" aria-hidden="true" />
+                  </a>
                 </div>
               </div>
     

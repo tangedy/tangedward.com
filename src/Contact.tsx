@@ -69,10 +69,12 @@ const Contact: React.FC = () => {
                   Email Edward
                 </a>
                 <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">
-                  LinkedIn ↗
+                  <span>LinkedIn</span>
+                  <span className="external-arrow" aria-hidden="true" />
                 </a>
                 <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">
-                  GitHub ↗
+                  <span>GitHub</span>
+                  <span className="external-arrow" aria-hidden="true" />
                 </a>
               </div>
             </div>
