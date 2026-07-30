@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Projects.css';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
@@ -16,6 +16,9 @@ interface Project {
   githubUrl?: string;
 }
 
+const mleePosterUrl = "/project assets/matthewproject2-poster.webp";
+const mleeVideoUrl = "/project assets/matthewproject2-fast.mp4";
+
 const projects: Project[] = [
   {
     id: 4,
@@ -31,8 +34,8 @@ const projects: Project[] = [
     description: "A responsive portfolio website with a design that allows the client's personality to shine through.",
     technologies: ["React", "Vite", "TypeScript", "Tailwind"],
     year: "2026",
-    imageUrl: "/project assets/matthewproject2-poster.webp",
-    videoUrl: "/project assets/matthewproject2.mp4",
+    imageUrl: mleePosterUrl,
+    videoUrl: mleeVideoUrl,
     liveUrl: "https://jmatthewlee.com",
 
   },
@@ -69,6 +72,23 @@ const projects: Project[] = [
 const Projects: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
   const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
+
+  useEffect(() => {
+    const preloadLinks = [
+      { href: mleePosterUrl, as: 'image', type: 'image/webp' },
+      { href: mleeVideoUrl, as: 'video', type: 'video/mp4' },
+    ].map(({ href, as, type }) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = href;
+      link.as = as;
+      link.type = type;
+      document.head.appendChild(link);
+      return link;
+    });
+
+    return () => preloadLinks.forEach((link) => link.remove());
+  }, []);
 
   usePageMetadata(
     'Projects | Edward Tang',

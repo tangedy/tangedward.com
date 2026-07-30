@@ -80,6 +80,11 @@ test('displays the project selected from the project list', () => {
 test('displays the MLee portfolio project beneath MinimalFinance', () => {
   renderApp('/projects');
 
+  const mleeVideoPreload = document.head.querySelector(
+    'link[rel="preload"][href$="matthewproject2-fast.mp4"]'
+  );
+  expect(mleeVideoPreload).toHaveAttribute('as', 'video');
+
   const projectSelectors = screen.getAllByRole('button', { name: /minimalfinance|mlee portfolio site/i });
   expect(projectSelectors[0]).toHaveAccessibleName(/minimalfinance/i);
   expect(projectSelectors[1]).toHaveAccessibleName(/mlee portfolio site/i);
@@ -88,7 +93,7 @@ test('displays the MLee portfolio project beneath MinimalFinance', () => {
 
   expect(screen.getByRole('heading', { name: 'MLee Portfolio Site' })).toBeInTheDocument();
   const firstVideo = screen.getByLabelText('MLee Portfolio Site project preview');
-  expect(firstVideo).toHaveAttribute('src', '/project assets/matthewproject2.mp4');
+  expect(firstVideo).toHaveAttribute('src', '/project assets/matthewproject2-fast.mp4');
   expect(firstVideo).toHaveAttribute('poster', '/project assets/matthewproject2-poster.webp');
   expect(firstVideo).toHaveAttribute('autoplay');
   expect(firstVideo).toHaveAttribute('loop');
