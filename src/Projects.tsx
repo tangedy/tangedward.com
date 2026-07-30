@@ -28,11 +28,13 @@ const projects: Project[] = [
   {
     id: 5,
     title: "MLee Portfolio Site",
-    description: "A responsive portfolio website built to present selected work and experience.",
+    description: "A responsive portfolio website with a design that allows the client's personality to shine through.",
     technologies: ["React", "Vite", "TypeScript", "Tailwind"],
     year: "2026",
     imageUrl: "/project assets/matthewproject2-poster.webp",
-    videoUrl: "/project assets/matthewproject2.mp4"
+    videoUrl: "/project assets/matthewproject2.mp4",
+    liveUrl: "https://jmatthewlee.com",
+
   },
   {
     id: 1,
