@@ -31,6 +31,7 @@ function About() {
 
   // Experiences data
   const experiences: Experience[] = [
+    
     {
       id: 1,
       title: "Backend Developer Intern",

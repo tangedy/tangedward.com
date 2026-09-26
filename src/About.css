@@ -79,7 +79,7 @@
 /* Experience and Testimonial Grid Layout */
 .experience-testimonial-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: start;
 }
