@@ -1,20 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import About from './About';
-import EasterEgg from './EasterEgg';
 import Home from './Home';
-import Projects from './Projects';
+
+// Secondary pages load as separate chunks so the home page ships less JavaScript.
+const loadAbout = () => import('./About');
+const loadProjects = () => import('./Projects');
+const loadArt = () => import('./Art');
+const loadEasterEgg = () => import('./EasterEgg');
+const About = lazy(loadAbout);
+const Projects = lazy(loadProjects);
+const Art = lazy(loadArt);
+const EasterEgg = lazy(loadEasterEgg);
 
 const projectImageUrls = [
-  '/project assets/MinimalFinance.png',
-  '/project assets/MOTI.png',
-  '/project assets/Recipe Radar.png',
-  '/project assets/Pixelize.png',
+  '/project assets/MinimalFinance.webp',
+  '/project assets/MOTI.webp',
+  '/project assets/Recipe Radar.webp',
+  '/project assets/Pixelize.webp',
 ];
 
 function App() {
   const navigate = useNavigate();
+
+  // Fetch the other pages' chunks once the browser is idle, so navigating never waits on the network.
+  useEffect(() => {
+    const prefetch = () => {
+      loadAbout().catch(() => undefined);
+      loadProjects().catch(() => undefined);
+      loadArt().catch(() => undefined);
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(prefetch);
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(prefetch, 1000);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     const images = projectImageUrls.map((url) => {
@@ -63,13 +87,16 @@ function App() {
   }, [navigate]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/projects" element={<Projects />} />
-      <Route path="/easteregg" element={<EasterEgg />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/art" element={<Art />} />
+        <Route path="/easteregg" element={<EasterEgg />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }
 

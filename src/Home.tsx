@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import './App.css';
+import SiteHeader from './SiteHeader';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 import './Home.css';
@@ -35,8 +35,6 @@ function Home() {
     );
 
     // Use staggered fade-in for each section with proper types
-    const headerLeft = useStaggeredFadeIn<HTMLDivElement>(0, { delay: 200 });
-    const headerRight = useStaggeredFadeIn<HTMLDivElement>(1, { delay: 200 });
     const chineseName = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
     const nameDivider = useStaggeredFadeIn<HTMLDivElement>(3, { delay: 200 });
     const englishName = useStaggeredFadeIn<HTMLDivElement>(4, { delay: 200 });
@@ -47,30 +45,7 @@ function Home() {
     const footerCredit = useStaggeredFadeIn<HTMLDivElement>(9, { delay: 200, rootMargin: '0px' });
     return (
       <div className="app home-page">
-          {/* Header with Navigation and Welcome Text */}
-          <header className="header">
-            <div className="header-content">
-              {/* Left Side - Welcome Text */}
-              <div 
-                ref={headerLeft.ref}
-                className={`header-left fade-in-element ${headerLeft.isVisible ? 'visible' : ''}`}
-              >
-                <h2 className="welcome-text">{greeting}</h2>
-              </div>
-              
-              {/* Right Side - Navigation */}
-              <div 
-                ref={headerRight.ref}
-                className={`header-right fade-in-element ${headerRight.isVisible ? 'visible' : ''}`}
-              >
-                <nav className="nav-links">
-                  <NavLink to="/" end className="nav-button">Home</NavLink>
-                  <NavLink to="/about" className="nav-button">About</NavLink>
-                  <NavLink to="/projects" className="nav-button">Projects</NavLink>
-                </nav>
-              </div>
-            </div>
-          </header>
+          <SiteHeader title={greeting} animate />
     
           {/* Main Content - Centered */}
           <main className="main-content">

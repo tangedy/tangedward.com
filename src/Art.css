@@ -1,0 +1,136 @@
+/* =====================================
+   ART PAGE
+   Justified rows: every image in a row shares one height, so nothing is cropped.
+   The preview reuses the shared modal from Modal.css.
+   ===================================== */
+
+/* The rest of the site fits one viewport; the gallery scrolls inside its own column. */
+.art-page .main-content {
+  display: block;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: calc(clamp(5.5rem, 13vh, 8rem) + 1rem);
+  padding-inline: var(--page-gutter);
+  padding-bottom: clamp(3rem, 8vh, 5rem);
+  scrollbar-width: thin;
+}
+
+.art-gallery {
+  --art-gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--art-gap);
+}
+
+/*
+ * Each row is a justified strip: units grow in proportion to their aspect ratio,
+ * so every unit in a row ends up the same height and the row fills the width exactly.
+ * Rows never wrap, so the size hierarchy holds at every screen width.
+ */
+.art-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--art-gap);
+}
+
+.art-row > * {
+  flex: var(--ratio) 1 0;
+  min-width: 0;
+  aspect-ratio: var(--ratio);
+}
+
+/* Two pieces sharing one column; each gets height in proportion to its own shape. */
+.art-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--art-gap);
+}
+
+.art-stack > .art-tile {
+  flex: var(--inverse-ratio) 1 0;
+  min-height: 0;
+}
+
+.art-tile {
+  display: block;
+  padding: 0;
+  border: none;
+  background: rgba(55, 45, 45, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.art-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.art-tile:hover img {
+  transform: scale(1.025);
+}
+
+/* ---------- Preview: shared modal, sized for artwork ---------- */
+
+.art-modal {
+  max-width: 1100px;
+}
+
+.art-modal .modal-body {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.art-modal .modal-image img {
+  width: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 0;
+}
+
+.art-modal-link {
+  display: inline-block;
+  margin-top: clamp(0.75rem, 1.5vw, 1rem);
+  font-size: var(--type-body);
+  color: var(--color-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.art-modal-link:hover {
+  color: var(--color-dark);
+}
+
+@media (max-width: 820px) {
+  .art-gallery {
+    --art-gap: 0.5rem;
+  }
+
+  .art-page .main-content {
+    height: auto;
+    overflow: visible;
+    padding-top: 6.5rem;
+  }
+
+  .art-modal .modal-body {
+    grid-template-columns: 1fr;
+  }
+
+  .art-modal .modal-image {
+    order: -1;
+  }
+
+  .art-modal .modal-image img {
+    max-height: 60vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-tile img {
+    transition: none;
+  }
+}

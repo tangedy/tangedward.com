@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import './Projects.css';
+import SiteHeader from './SiteHeader';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
 interface Project {
   id: number;
+  slug: string;
   title: string;
   description: string;
   technologies: string[];
@@ -22,14 +24,16 @@ const mleeVideoUrl = "/project assets/matthewproject2-fast.mp4";
 const projects: Project[] = [
   {
     id: 4,
+    slug: "minimalfinance",
     title: "MinimalFinance",
     description: "A privacy-focused iOS 17 personal-finance application supporting bank statement imports, spending analytics, recurring expense detection, and transaction categorization.",
     technologies: ["Swift", "SwiftUI", "SwiftData", "Swift Charts", "XCTest", "GitHub Actions"],
     year: "2026",
-    imageUrl: "/project assets/MinimalFinance.png"
+    imageUrl: "/project assets/MinimalFinance.webp"
   },
   {
     id: 5,
+    slug: "mlee-portfolio",
     title: "MLee Portfolio Site",
     description: "A responsive portfolio website with a design that allows the client's personality to shine through.",
     technologies: ["React", "Vite", "TypeScript", "Tailwind"],
@@ -41,39 +45,66 @@ const projects: Project[] = [
   },
   {
     id: 1,
+    slug: "moti",
     title: "Moti",
     description: "A web app that takes you from vague goal to concrete plan. You input what you want to achieve, and it guides you through a consultation process to clarify exactly what you want, the logistics involved, and creates a time-bound action plan with phases and specific tasks.",
     technologies: ["Tailwind css", "Typescript", "React", "Next.js", "Groq API"],
     year: "2025",
-    imageUrl: "/project assets/MOTI.png",
+    imageUrl: "/project assets/MOTI.webp",
     liveUrl: "https://motiapp.dev",
     githubUrl: "https://github.com/tangedy/MOTI"
   }, 
   {
     id: 2,
+    slug: "recipe-radar",
     title: "Recipe Radar",
     description: "A full stack web application for college students with dietary restrictions to easily search for accessible recipes tailored to their needs.",
     technologies: ["React", "Javascript", "Python", "CSS"],
     year: "2024",
-    imageUrl: "/project assets/Recipe Radar.png",
+    imageUrl: "/project assets/Recipe Radar.webp",
     githubUrl: "https://github.com/tangedy/Recipe-Radar-HackTheNorth2024"
   },
   {
     id: 3,
+    slug: "pixelize",
     title: "Pixelize",
     description: "A pixel art software made in Python with Object Oriented Programming that enables users to create detailed pixel art with tools like paint bucket, undo, and layers. Supports exporting artwork as transparent PNG files for seamless integration into other projects.",
     technologies: ["Python"],
     year: "2023",
-    imageUrl: "/project assets/Pixelize.png",
+    imageUrl: "/project assets/Pixelize.webp",
     githubUrl: "https://github.com/HD-Brody/Pixelize"
   }
 ];
 
 const Projects: React.FC = () => {
-  const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
+  // The selected project lives in the URL (?project=moti) so it can be shared and survives reloads.
+  const [searchParams, setSearchParams] = useSearchParams();
   const mleeVideoRef = useRef<HTMLVideoElement>(null);
-  const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
+  const selectedProject = projects.find((project) => project.slug === searchParams.get('project')) ?? projects[0];
+  const selectProject = (project: Project) => {
+    setSearchParams(project.id === projects[0].id ? {} : { project: project.slug }, { replace: true });
+  };
   const isMleeSelected = selectedProject.videoUrl === mleeVideoUrl;
+  const selectorRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  // Arrow keys (and Home/End) move through the project list, selecting as they go.
+  const handleSelectorKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = projects.findIndex((project) => project.id === selectedProject.id);
+    const nextIndexByKey: Record<string, number> = {
+      ArrowDown: (currentIndex + 1) % projects.length,
+      ArrowRight: (currentIndex + 1) % projects.length,
+      ArrowUp: (currentIndex - 1 + projects.length) % projects.length,
+      ArrowLeft: (currentIndex - 1 + projects.length) % projects.length,
+      Home: 0,
+      End: projects.length - 1,
+    };
+    const nextIndex = nextIndexByKey[event.key];
+    if (nextIndex === undefined) return;
+
+    event.preventDefault();
+    selectProject(projects[nextIndex]);
+    selectorRefs.current[nextIndex]?.focus();
+  };
 
   useEffect(() => {
     mleeVideoRef.current?.load();
@@ -104,24 +135,7 @@ const Projects: React.FC = () => {
 
   return (
     <div className="app projects-page">
-      {/* Header with Navigation */}
-      <header className="header">
-        <div className="header-content">
-          {/* Left Side - Page Title */}
-          <div className="header-left">
-            <h2 className="welcome-text">Projects</h2>
-          </div>
-          
-          {/* Right Side - Navigation */}
-          <div className="header-right">
-            <nav className="nav-links">
-              <NavLink to="/" end className="nav-button">Home</NavLink>
-              <NavLink to="/about" className="nav-button">About</NavLink>
-              <NavLink to="/projects" className="nav-button">Projects</NavLink>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <SiteHeader title="Projects" />
 
       {/* Main Content */}
       <main className="main-content">
@@ -202,13 +216,14 @@ const Projects: React.FC = () => {
               aria-label="Select a project"
             >
               <h2>Projects</h2>
-              <div className="projects-list">
+              <div className="projects-list" onKeyDown={handleSelectorKeyDown}>
                 {projects.map((project, index) => (
                   <React.Fragment key={project.id}>
                     <button
+                      ref={(element) => { selectorRefs.current[index] = element; }}
                       type="button"
                       className={`project-selector-item ${project.id === selectedProject.id ? 'active' : ''}`}
-                      onClick={() => setSelectedProjectId(project.id)}
+                      onClick={() => selectProject(project)}
                       aria-pressed={project.id === selectedProject.id}
                     >
                       <span className="project-selector-content">

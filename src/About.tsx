@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import './About.css';
+import './Modal.css';
+import SiteHeader from './SiteHeader';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
@@ -38,7 +39,7 @@ function About() {
       company: "Government of Ontario",
       year: "2025",
       description: "Developed and maintained backend services for government applications, working with Java, Spring Boot, Maven, and React for error handling, security development, and frontend features.",
-      imageUrl: "/project assets/OPS collage.png"
+      imageUrl: "/project assets/OPS collage.webp"
     },
     {
       id: 2,
@@ -46,15 +47,15 @@ function About() {
       company: "Waddlewell LLC",
       year: "2025",
       description: "Led the design and development of a mobile app, securing $334K in early-stage investment through strategic pitching and cross-functional collaboration.",
-      imageUrl: "/project assets/waddle prototyping.png"
+      imageUrl: "/project assets/waddle prototyping.webp"
     },
     {
       id: 3,
       title: "Frontend Developer",
       company: "University of Waterloo Boxing Club",
       year: "2024",
-      description: "helped build the onnboarding portal with React and Tailwind CSS that grew our club's membership from 0 to 60+ members in two weeks!",
-      imageUrl: "/project assets/uw boxing collage.png"
+      description: "Helped build the onboarding portal with React and Tailwind CSS that grew our club's membership from 0 to 60+ members in two weeks!",
+      imageUrl: "/project assets/uw boxing collage.webp"
     }
   ];
 
@@ -128,24 +129,7 @@ function About() {
 
   return (
     <div className="app about-page">
-      {/* Header with Navigation */}
-      <header className="header">
-        <div className="header-content">
-          {/* Left Side - Page Title */}
-          <div className="header-left">
-            <h2 className="welcome-text">About</h2>
-          </div>
-          
-          {/* Right Side - Navigation */}
-          <div className="header-right">
-            <nav className="nav-links">
-              <NavLink to="/" end className="nav-button">Home</NavLink>
-              <NavLink to="/about" className="nav-button">About</NavLink>
-              <NavLink to="/projects" className="nav-button">Projects</NavLink>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <SiteHeader title="About" />
 
       {/* Main Content */}
       <main className="main-content">

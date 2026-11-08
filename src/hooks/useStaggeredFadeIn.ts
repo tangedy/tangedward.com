@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface UseStaggeredFadeInOptions {
   delay?: number; // Delay between each element animation
@@ -74,41 +74,3 @@ export const useStaggeredFadeIn = <T extends HTMLElement>(
     animationDelay,
   };
 };
-
-// Hook for managing multiple elements with staggered animations
-export const useStaggeredContainer = <T extends HTMLElement>(
-  elementCount: number,
-  options: UseStaggeredFadeInOptions = {}
-) => {
-  // Create individual refs at the top level
-  const ref0 = useRef<T>(null);
-  const ref1 = useRef<T>(null);
-  const ref2 = useRef<T>(null);
-  const ref3 = useRef<T>(null);
-  const ref4 = useRef<T>(null);
-  const ref5 = useRef<T>(null);
-  const ref6 = useRef<T>(null);
-  const ref7 = useRef<T>(null);
-  const ref8 = useRef<T>(null);
-  const ref9 = useRef<T>(null);
-
-  // Create refs array using useMemo to avoid recreating
-  const refs = useMemo(() => {
-    const allRefs = [ref0, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9];
-    return allRefs.slice(0, elementCount);
-  }, [elementCount]);
-
-  const [elements, setElements] = useState<Array<{ id: number; ref: React.RefObject<T | null>; isVisible: boolean; animationDelay: number }>>([]);
-
-  useEffect(() => {
-    const newElements = refs.map((ref, index) => ({
-      id: index,
-      ref,
-      isVisible: false,
-      animationDelay: index * (options.delay || 200),
-    }));
-    setElements(newElements);
-  }, [refs, options.delay]);
-
-  return elements;
-}; 

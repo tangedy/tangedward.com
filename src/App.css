@@ -257,3 +257,24 @@ button:focus-visible {
     padding-block: clamp(0.75rem, 2vw, 1rem);
   }
 } 
+/* Respect the OS "reduce motion" setting: show content immediately
+   instead of sliding it in after staggered delays. */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-element,
+  .fade-in-element.visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .project-image img,
+  .project-image video:not([hidden]),
+  .project-image > span,
+  .project-content,
+  .modal-overlay,
+  .modal-content,
+  .modal-overlay.closing,
+  .modal-content.closing {
+    animation-duration: 0.01ms !important;
+  }
+}
