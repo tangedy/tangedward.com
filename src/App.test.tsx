@@ -330,3 +330,15 @@ test('lists FitStealer right under MinimalFinance with its own link', async () =
   expect(selectorTitles.slice(0, 3)).toEqual(['MinimalFinance', 'FitStealer', 'MLee Portfolio Site']);
 });
 
+test('shows the Reality Labs photo and summary', async () => {
+  renderApp('/about');
+
+  fireEvent.click(await screen.findByRole('button', { name: /ai\/ml developer/i }));
+
+  const dialog = screen.getByRole('dialog', { name: 'AI/ML Developer' });
+  expect(within(dialog).getByText(/siamese neural network/i)).toBeInTheDocument();
+  expect(within(dialog).getByAltText('AI/ML Developer'))
+    .toHaveAttribute('srcset', expect.stringContaining('/experience/reality-labs-1200.webp 1200w'));
+  expect(within(dialog).getByText('Our gesture recognition in action!')).toBeInTheDocument();
+});
+

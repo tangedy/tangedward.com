@@ -12,7 +12,7 @@ interface ExperienceImage {
   slug: string;
   width: number;
   height: number;
-  caption: string;
+  caption?: string;
 }
 
 interface Experience {
@@ -36,6 +36,8 @@ const experiences: Experience[] = [
     title: 'AI/ML Developer',
     company: 'University of Waterloo Reality Labs',
     year: '2026',
+    description: 'Trained a Siamese neural network for few-shot VR hand-gesture recognition, reaching 97% F1 on unseen gestures from just one example, contributing to the Universal Gestures Unity plugin for mixed-reality developers.',
+    image: { slug: 'reality-labs', width: 1200, height: 704, caption: 'Our gesture recognition in action!' },
   },
   {
     id: 5,
@@ -282,7 +284,9 @@ function About() {
                     image={selectedExperience.image}
                     alt={selectedExperience.title}
                   />
-                  <p className="modal-image-caption">{selectedExperience.image.caption}</p>
+                  {selectedExperience.image.caption && (
+                    <p className="modal-image-caption">{selectedExperience.image.caption}</p>
+                  )}
                 </div>
               )}
             </div>
