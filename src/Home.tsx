@@ -105,7 +105,7 @@ function Home() {
                 >
                   {siteLinks.map((link) => (
                     <a key={link.href} href={link.href} {...externalLinkProps(link)}>
-                      {link.label} ↗︎
+                      {`${link.label} ↗︎`}
                     </a>
                   ))}
                 </div>

@@ -128,7 +128,7 @@ function MobileMenu() {
           <span className="mobile-menu-heading">My links</span>
           {siteLinks.map((link) => (
             <a key={link.href} href={link.href} {...externalLinkProps(link)}>
-              {link.label} ↗︎
+              {`${link.label} ↗︎`}
             </a>
           ))}
         </div>
