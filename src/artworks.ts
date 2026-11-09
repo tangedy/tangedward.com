@@ -52,6 +52,23 @@ export const galleryRows: GalleryUnit[][] = [
   ['portrait-study', '2-24-23', '3-05-23'],
 ];
 
+/**
+ * The same pieces arranged for phones: at most two side by side, so nothing shrinks to a
+ * thumbnail. Large pieces still get a row of their own, and every artwork appears once.
+ */
+export const mobileGalleryRows: GalleryUnit[][] = [
+  ['summer-2023', '17th'],
+  ['scroll'],
+  ['12-15-22', 'gaze'],
+  ['symphony'],
+  ['life-drawing-workshop', 'marcus-aurelius'],
+  ['morning-in-kensington'],
+  ['bridge-sketch', '2-18-23'],
+  ['vagabond-musashi', ['sit', 'zhuo']],
+  ['portrait-study'],
+  ['2-24-23', '3-05-23'],
+];
+
 export const artImage = (artwork: Artwork, size: 400 | 800 | 1200 | 1600) => `/art/${artwork.slug}-${size}.webp`;
 
 export const artstationUrl = (artwork: Artwork) => `https://www.artstation.com/artwork/${artwork.artstationId}`;

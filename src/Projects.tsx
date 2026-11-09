@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './Projects.css';
 import SiteHeader from './SiteHeader';
+import { useIsMobile } from './hooks/useIsMobile';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
@@ -13,6 +14,8 @@ interface Project {
   technologies: string[];
   year: string;
   imageUrl?: string;
+  /** Intrinsic size of the image (or video poster), so the phone feed reserves its space before it loads. */
+  imageSize?: [number, number];
   videoUrl?: string;
   liveUrl?: string;
   githubUrl?: string;
@@ -32,6 +35,7 @@ const projects: Project[] = [
     technologies: ["Swift", "SwiftUI", "SwiftData", "Swift Charts", "XCTest", "GitHub Actions"],
     year: "2026",
     imageUrl: "/project assets/MinimalFinance.webp",
+    imageSize: [1020, 1684],
     portrait: true
   },
   {
@@ -42,6 +46,7 @@ const projects: Project[] = [
     technologies: ["Python", "TypeScript", "Kotlin", "Swift", "Baseten", "Shopify Catalog"],
     year: "2026",
     imageUrl: "/project assets/FitStealer.webp",
+    imageSize: [905, 1807],
     githubUrl: "https://github.com/Hack-the-North-2026/HacktheNorth2026",
     portrait: true
   },
@@ -53,6 +58,7 @@ const projects: Project[] = [
     technologies: ["React", "Vite", "TypeScript", "Tailwind"],
     year: "2026",
     imageUrl: mleePosterUrl,
+    imageSize: [960, 540],
     videoUrl: mleeVideoUrl,
     liveUrl: "https://jmatthewlee.com",
 
@@ -65,6 +71,7 @@ const projects: Project[] = [
     technologies: ["Tailwind css", "Typescript", "React", "Next.js", "Groq API"],
     year: "2025",
     imageUrl: "/project assets/MOTI.webp",
+    imageSize: [1080, 660],
     liveUrl: "https://motiapp.dev",
     githubUrl: "https://github.com/tangedy/MOTI"
   }, 
@@ -76,6 +83,7 @@ const projects: Project[] = [
     technologies: ["React", "Javascript", "Python", "CSS"],
     year: "2024",
     imageUrl: "/project assets/Recipe Radar.webp",
+    imageSize: [1080, 646],
     githubUrl: "https://github.com/tangedy/Recipe-Radar-HackTheNorth2024"
   },
   {
@@ -86,11 +94,37 @@ const projects: Project[] = [
     technologies: ["Python"],
     year: "2023",
     imageUrl: "/project assets/Pixelize.webp",
+    imageSize: [1080, 666],
     githubUrl: "https://github.com/HD-Brody/Pixelize"
   }
 ];
 
 const Projects: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const isMobile = useIsMobile();
+
+  usePageMetadata(
+    'Projects | Edward Tang',
+    'Selected software, product design, and AI projects by Edward Tang.',
+    '/projects'
+  );
+
+  return (
+    <div className="app projects-page">
+      <SiteHeader title="Projects" />
+
+      {/* Main Content */}
+      <main className="main-content">
+        {isMobile
+          ? <ProjectFeed linkedSlug={searchParams.get('project')} />
+          : <ProjectShowcase />}
+      </main>
+    </div>
+  );
+};
+
+/** Desktop: the selected project beside a list to pick from. */
+function ProjectShowcase() {
   // The selected project lives in the URL (?project=moti) so it can be shared and survives reloads.
   const [searchParams, setSearchParams] = useSearchParams();
   const mleeVideoRef = useRef<HTMLVideoElement>(null);
@@ -137,125 +171,210 @@ const Projects: React.FC = () => {
     }
   }, [isMleeSelected]);
 
-  usePageMetadata(
-    'Projects | Edward Tang',
-    'Selected software, product design, and AI projects by Edward Tang.',
-    '/projects'
-  );
-
   const projectsTitle = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
   const projectDetail = useStaggeredFadeIn<HTMLElement>(3, { delay: 200 });
   const projectsList = useStaggeredFadeIn<HTMLElement>(4, { delay: 200 });
 
   return (
-    <div className="app projects-page">
-      <SiteHeader title="Projects" />
+    <div className="projects-wrapper">
+      <div className="projects-layout">
+        {/* Page Title */}
+        <div 
+          ref={projectsTitle.ref}
+          className={`projects-title fade-in-element ${projectsTitle.isVisible ? 'visible' : ''}`}
+        >
+          <h1>selected work</h1>
+        </div>
 
-      {/* Main Content */}
-      <main className="main-content">
-        <div className="projects-wrapper">
-          <div className="projects-layout">
-            {/* Page Title */}
-            <div 
-              ref={projectsTitle.ref}
-              className={`projects-title fade-in-element ${projectsTitle.isVisible ? 'visible' : ''}`}
-            >
-              <h1>selected work</h1>
+        <article
+          ref={projectDetail.ref}
+          className={`project-detail ${selectedProject.portrait ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
+          aria-live="polite"
+        >
+          <div className={`project-image ${isMleeSelected ? 'video-project' : ''}`}>
+            <video
+              ref={mleeVideoRef}
+              src={mleeVideoUrl}
+              poster={mleePosterUrl}
+              aria-label="MLee Portfolio Site project preview"
+              autoPlay={isMleeSelected}
+              muted
+              loop
+              playsInline
+              preload="auto"
+              hidden={!isMleeSelected}
+            />
+            {!isMleeSelected && selectedProject.imageUrl ? (
+              <img
+                key={`${selectedProject.id}-image`}
+                src={selectedProject.imageUrl}
+                alt={`${selectedProject.title} project preview`}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
+            ) : !isMleeSelected ? <span key={`${selectedProject.id}-image`}>Project Image</span> : null}
+          </div>
+
+          <div className="project-content" key={`${selectedProject.id}-content`}>
+            <div className="project-heading">
+              <div>
+                <span className="project-year">{selectedProject.year}</span>
+                <h2>{selectedProject.title}</h2>
+              </div>
+
+              <div className="project-links">
+                {selectedProject.liveUrl && (
+                  <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+                    View Live ↗︎
+                  </a>
+                )}
+                {selectedProject.githubUrl && (
+                  <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+                    View Code ↗︎
+                  </a>
+                )}
+              </div>
             </div>
 
-            <article
-              ref={projectDetail.ref}
-              className={`project-detail ${selectedProject.portrait ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
-              aria-live="polite"
-            >
-              <div className={`project-image ${isMleeSelected ? 'video-project' : ''}`}>
-                <video
-                  ref={mleeVideoRef}
-                  src={mleeVideoUrl}
-                  poster={mleePosterUrl}
-                  aria-label="MLee Portfolio Site project preview"
-                  autoPlay={isMleeSelected}
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  hidden={!isMleeSelected}
-                />
-                {!isMleeSelected && selectedProject.imageUrl ? (
-                  <img
-                    key={`${selectedProject.id}-image`}
-                    src={selectedProject.imageUrl}
-                    alt={`${selectedProject.title} project preview`}
-                    loading="eager"
-                    decoding="async"
-                    fetchPriority="high"
-                  />
-                ) : !isMleeSelected ? <span key={`${selectedProject.id}-image`}>Project Image</span> : null}
-              </div>
+            <p className="project-description">{selectedProject.description}</p>
 
-              <div className="project-content" key={`${selectedProject.id}-content`}>
-                <div className="project-heading">
-                  <div>
-                    <span className="project-year">{selectedProject.year}</span>
-                    <h2>{selectedProject.title}</h2>
-                  </div>
-
-                  <div className="project-links">
-                    {selectedProject.liveUrl && (
-                      <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                        View Live ↗︎
-                      </a>
-                    )}
-                    {selectedProject.githubUrl && (
-                      <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                        View Code ↗︎
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <p className="project-description">{selectedProject.description}</p>
-
-                <div className="project-technologies" aria-label="Technologies used">
-                  {selectedProject.technologies.map((technology) => (
-                    <span key={technology} className="tech-tag">{technology}</span>
-                  ))}
-                </div>
-              </div>
-            </article>
-
-            <aside
-              ref={projectsList.ref}
-              className={`projects-selector fade-in-element ${projectsList.isVisible ? 'visible' : ''}`}
-              aria-label="Select a project"
-            >
-              <h2>Projects</h2>
-              <div className="projects-list" onKeyDown={handleSelectorKeyDown}>
-                {projects.map((project, index) => (
-                  <React.Fragment key={project.id}>
-                    <button
-                      ref={(element) => { selectorRefs.current[index] = element; }}
-                      type="button"
-                      className={`project-selector-item ${project.id === selectedProject.id ? 'active' : ''}`}
-                      onClick={() => selectProject(project)}
-                      aria-pressed={project.id === selectedProject.id}
-                    >
-                      <span className="project-selector-content">
-                        <span className="project-selector-title">{project.title}</span>
-                        <span className="project-selector-summary">{project.technologies.join(', ')}</span>
-                      </span>
-                      <span className="project-selector-date">{project.year}</span>
-                    </button>
-                    {index < projects.length - 1 && <div className="project-divider" />}
-                  </React.Fragment>
-                ))}
-              </div>
-            </aside>
+            <div className="project-technologies" aria-label="Technologies used">
+              {selectedProject.technologies.map((technology) => (
+                <span key={technology} className="tech-tag">{technology}</span>
+              ))}
+            </div>
           </div>
-        </div>
-      </main>
+        </article>
+
+        <aside
+          ref={projectsList.ref}
+          className={`projects-selector fade-in-element ${projectsList.isVisible ? 'visible' : ''}`}
+          aria-label="Select a project"
+        >
+          <h2>Projects</h2>
+          <div className="projects-list" onKeyDown={handleSelectorKeyDown}>
+            {projects.map((project, index) => (
+              <React.Fragment key={project.id}>
+                <button
+                  ref={(element) => { selectorRefs.current[index] = element; }}
+                  type="button"
+                  className={`project-selector-item ${project.id === selectedProject.id ? 'active' : ''}`}
+                  onClick={() => selectProject(project)}
+                  aria-pressed={project.id === selectedProject.id}
+                >
+                  <span className="project-selector-content">
+                    <span className="project-selector-title">{project.title}</span>
+                    <span className="project-selector-summary">{project.technologies.join(', ')}</span>
+                  </span>
+                  <span className="project-selector-date">{project.year}</span>
+                </button>
+                {index < projects.length - 1 && <div className="project-divider" />}
+              </React.Fragment>
+            ))}
+          </div>
+        </aside>
+      </div>
     </div>
   );
-};
+}
+
+/**
+ * Phones: instead of a picker and one project at a time, every project is a card in a
+ * single scrolling column. A shared link (?project=moti) scrolls straight to its card.
+ */
+function ProjectFeed({ linkedSlug }: { linkedSlug: string | null }) {
+  const title = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
+
+  useEffect(() => {
+    if (!linkedSlug) return;
+    document.getElementById(`project-${linkedSlug}`)?.scrollIntoView({ block: 'start' });
+    // Only on arrival; scrolling afterwards is the reader's.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="project-feed">
+      <div
+        ref={title.ref}
+        className={`project-feed-title fade-in-element ${title.isVisible ? 'visible' : ''}`}
+      >
+        <h1>selected work</h1>
+        <span>({String(projects.length).padStart(2, '0')})</span>
+      </div>
+
+      {projects.map((project, index) => (
+        <ProjectCard key={project.id} project={project} index={index} />
+      ))}
+    </div>
+  );
+}
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  // The first two cards join the page's load-in sequence; later ones fade in as they scroll up.
+  const card = useStaggeredFadeIn<HTMLElement>(index < 2 ? index + 3 : 0, { delay: 200 });
+  const media = project.videoUrl ? (
+    <video
+      src={project.videoUrl}
+      poster={project.imageUrl}
+      aria-label={`${project.title} project preview`}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      width={project.imageSize?.[0]}
+      height={project.imageSize?.[1]}
+    />
+  ) : project.imageUrl ? (
+    <img
+      src={project.imageUrl}
+      alt={`${project.title} project preview`}
+      width={project.imageSize?.[0]}
+      height={project.imageSize?.[1]}
+      loading={index < 2 ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  ) : null;
+
+  return (
+    <article
+      ref={card.ref}
+      id={`project-${project.slug}`}
+      className={`project-card ${project.portrait ? 'portrait-project' : ''} fade-in-element ${card.isVisible ? 'visible' : ''}`}
+    >
+      <div className="project-card-meta">
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <span>{project.year}</span>
+      </div>
+
+      {media && <div className="project-card-media">{media}</div>}
+
+      <h2>{project.title}</h2>
+      <p className="project-description">{project.description}</p>
+
+      <div className="project-technologies" aria-label="Technologies used">
+        {project.technologies.map((technology) => (
+          <span key={technology} className="tech-tag">{technology}</span>
+        ))}
+      </div>
+
+      {(project.liveUrl || project.githubUrl) && (
+        <div className="project-card-links">
+          {project.liveUrl && (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+              View Live ↗︎
+            </a>
+          )}
+          {project.githubUrl && (
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link">
+              View Code ↗︎
+            </a>
+          )}
+        </div>
+      )}
+    </article>
+  );
+}
 
 export default Projects;

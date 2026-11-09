@@ -301,20 +301,29 @@
 
 /* ---------- Phones and small tablets: one column, page scrolls ---------- */
 
+.experience-more {
+  display: none;
+}
+
 @media (max-width: 820px) {
+  .about-page {
+    --type-about: 1.1875rem;
+    --type-testimonial: 1.125rem;
+  }
+
   .about-page .main-content {
+    display: block;
     min-height: 100vh;
     height: auto;
-    align-items: flex-start;
-    padding-top: 6.5rem;
-    padding-bottom: 2.5rem;
+    padding-top: var(--mobile-top-offset);
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
     overflow: visible;
   }
 
-  /* Read top to bottom: About me, Experience, then Testimonials. */
+  /* Read top to bottom: About me, Experience, then Testimonials, each under a rule. */
   .about-wrapper {
-    grid-template-columns: 1fr;
-    row-gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 3rem;
   }
 
   .about-main-column {
@@ -323,10 +332,117 @@
 
   .about-intro {
     order: -1;
+    gap: 1rem;
+  }
+
+  .about-section {
+    padding-top: 1rem;
+    border-top: 1px solid var(--mobile-rule);
+  }
+
+  .about-intro h2 {
+    margin-bottom: 0.25rem;
   }
 
   .about-intro p {
     line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .about-experience {
+    gap: 1rem;
+  }
+
+  .experience-timeline {
+    gap: 0;
+  }
+
+  .experience-item.clickable {
+    --hover-edge-overhang: 0px;
+    min-height: 44px;
+    padding: 0.75rem 2.5rem 1.25rem 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Hover lift and card don't make sense on touch; a pressed row dims instead. */
+  .experience-item.clickable:hover {
+    transform: none;
+  }
+
+  .experience-item.clickable::before {
+    display: none;
+  }
+
+  .experience-item.clickable:active {
+    opacity: 0.6;
+  }
+
+  .experience-item h3 {
+    font-size: 1.25rem;
+  }
+
+  .experience-item p {
+    font-size: var(--type-body);
+  }
+
+  .experience-item::after {
+    top: 1rem;
+  }
+
+  .experience-timeline li:not(:last-child)::before {
+    top: calc(1rem + 4.5px);
+    bottom: calc(-1rem - 4.5px);
+  }
+
+  /* A small "+" drawn from two hairlines, centred on the role's text. */
+  .experience-more {
+    display: block;
+    position: absolute;
+    right: 0.25rem;
+    top: calc(50% - 0.25rem);
+    width: 12px;
+    height: 12px;
+    background:
+      linear-gradient(var(--color-light), var(--color-light)) center / 100% 1px no-repeat,
+      linear-gradient(var(--color-light), var(--color-light)) center / 1px 100% no-repeat;
+  }
+
+  .about-testimonials {
+    padding-top: 1rem;
+  }
+
+  .about-testimonials .about-section-heading {
+    margin-bottom: 1rem;
+  }
+
+  .testimonial-indicator {
+    gap: 0.25rem;
+  }
+
+  /* Bigger tap targets; the drawn track stays the same thin line. */
+  .testimonial-bar {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .testimonial-bar::before,
+  .testimonial-bar-fill {
+    left: 0.375rem;
+    width: calc(100% - 0.75rem);
+  }
+
+  .testimonial-bar::before {
+    right: 0.375rem;
+    width: auto;
+  }
+
+  .testimonial-bar-fill {
+    transform-origin: left center;
+  }
+
+  .testimonial blockquote {
+    line-height: 1.45;
+    text-wrap: pretty;
   }
 }
 

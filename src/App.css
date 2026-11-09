@@ -194,69 +194,174 @@ button:focus-visible {
    RESPONSIVE UTILITIES
    ===================================== */
 
-/* Small screens (up to 767px) */
+/* =====================================
+   PHONES AND SMALL TABLETS (up to 820px)
+   The page scrolls normally, and the four nav links collapse into one
+   "Menu" button that opens a full-screen page index (SiteHeader.tsx).
+   ===================================== */
 @media (max-width: 820px) {
+  :root {
+    --page-gutter: 1.25rem;
+    --mobile-top-offset: 6rem;
+    --mobile-rule: rgba(55, 45, 45, 0.14);
+    --type-mobile-display: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
   body {
     overflow: auto;
     overflow-x: hidden;
     height: auto;
   }
-  
+
   .app {
     height: auto;
     overflow: visible;
   }
-  
+
+  .header {
+    padding-block: 0.75rem;
+  }
+
   .header-content {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: auto;
-    gap: 0.75rem;
-    text-align: left;
+    gap: 1rem;
   }
-  
+
   .header-left {
     min-width: 0;
-    justify-content: flex-start;
-  }
-  
-  .header-right {
-    justify-content: flex-end;
   }
 
   .welcome-text {
-    font-size: var(--type-body);
+    font-size: var(--type-lead);
     white-space: nowrap;
-  }
-
-  .nav-links {
-    gap: clamp(0.125rem, 1vw, 0.5rem);
-  }
-
-  .nav-links a {
-    min-height: 40px;
-    padding: 0.375rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
-/* Extra small screens (up to 480px) */
-@media (max-width: 480px) {
-  :root {
-    --page-gutter: clamp(0.75rem, 3vw, 1rem);
-  }
+/* ---------- Phone menu ---------- */
 
-  .nav-links {
-    gap: 0;
-  }
-  
-  .nav-links a {
-    font-size: var(--type-label);
-    padding-inline: 0.3rem;
-  }
-  
-  .header {
-    padding-block: clamp(0.75rem, 2vw, 1rem);
-  }
-} 
+.menu-toggle {
+  min-height: 44px;
+  min-width: 44px;
+  margin-right: -0.5rem;
+  padding: 0 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--color-dark);
+  font: inherit;
+  font-size: var(--type-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Two short rules that close into one when the menu is open. */
+.menu-toggle::after {
+  content: '';
+  width: 14px;
+  height: 5px;
+  border-block: 1px solid currentColor;
+  transition: height 0.3s ease;
+}
+
+.menu-toggle[aria-expanded='true']::after {
+  height: 1px;
+  border-bottom: 0;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: var(--mobile-top-offset, 6rem) var(--page-gutter) calc(2rem + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: linear-gradient(10deg, #eeeee5 0%, #f5f7f8 70%);
+  animation: menuFadeIn 0.3s ease both;
+}
+
+.mobile-menu[hidden] {
+  display: none;
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--mobile-rule, rgba(55, 45, 45, 0.14));
+}
+
+.mobile-menu-link,
+.mobile-menu-footer {
+  animation: fadeInUp 0.6s ease both;
+  animation-delay: calc(var(--i, 0) * 70ms + 60ms);
+}
+
+.mobile-menu-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--mobile-rule, rgba(55, 45, 45, 0.14));
+  color: var(--color-dark);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-menu-index {
+  min-width: 2.25rem;
+  font-size: var(--type-label);
+  color: var(--color-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.mobile-menu-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: var(--type-mobile-display, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-link.active .mobile-menu-label,
+.mobile-menu-link:active .mobile-menu-label {
+  color: var(--color-light);
+}
+
+.mobile-menu-footer {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-heading {
+  margin-bottom: 0.5rem;
+  font-size: var(--type-label);
+  color: var(--color-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mobile-menu-footer a {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  color: var(--color-dark);
+  font-size: var(--type-label);
+  text-decoration: none;
+}
+
 /* Respect the OS "reduce motion" setting: show content immediately
    instead of sliding it in after staggered delays. */
 @media (prefers-reduced-motion: reduce) {
@@ -274,7 +379,10 @@ button:focus-visible {
   .modal-overlay,
   .modal-content,
   .modal-overlay.closing,
-  .modal-content.closing {
+  .modal-content.closing,
+  .mobile-menu,
+  .mobile-menu-link,
+  .mobile-menu-footer {
     animation-duration: 0.01ms !important;
   }
 }

@@ -3,6 +3,7 @@ import './App.css';
 import SiteHeader from './SiteHeader';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
+import { externalLinkProps, siteLinks } from './siteLinks';
 import './Home.css';
 
 const greetingStorageKey = 'home-greeting';
@@ -85,7 +86,8 @@ function Home() {
                   ref={summaryText.ref}
                   className={`summary-text fade-in-element ${summaryText.isVisible ? 'visible' : ''}`}
                 >
-                  Edward Tang is a developer with a love<br/> for creating software both functional <br/> and aesthetically deliberate in design. <br/> <br/> He is curious about interactive software<br/>and ways to adopt new technology <br/> seamlessly into our every day lives. <br/><br/>Currently a student at <br/>the University of Waterloo.
+                  {/* Line breaks are hand-set for the desktop column; phones hide them (Home.css) and let the text wrap. */}
+                  Edward Tang is a developer with a love<br className="line-break" /> for creating software both functional <br className="line-break" /> and aesthetically deliberate in design. <br/> <br/> He is curious about interactive software<br className="line-break" />{' '}and ways to adopt new technology <br className="line-break" /> seamlessly into our every day lives. <br/><br/>Currently a student at <br className="line-break" />the University of Waterloo.
                 </div>
               </div>
     
@@ -101,18 +103,11 @@ function Home() {
                   ref={linksList.ref}
                   className={`links-list fade-in-element ${linksList.isVisible ? 'visible' : ''}`}
                 >
-                  <a href="https://linkedin.com/in/tanged" target="_blank" rel="noopener noreferrer">
-                    linkedin.com/in/tanged ↗︎
-                  </a>
-                  <a href="https://artstation.com/tangedy" target="_blank" rel="noopener noreferrer">
-                    artstation.com/tangedy ↗︎
-                  </a>
-                  <a href="mailto:e56tang@uwaterloo.ca">
-                    e56tang@uwaterloo.ca ↗︎
-                  </a>
-                  <a href="https://github.com/tangedy" target="_blank" rel="noopener noreferrer">
-                    github.com/tangedy ↗︎
-                  </a>
+                  {siteLinks.map((link) => (
+                    <a key={link.href} href={link.href} {...externalLinkProps(link)}>
+                      {link.label} ↗︎
+                    </a>
+                  ))}
                 </div>
               </div>
     

@@ -219,6 +219,8 @@ function About() {
                     <span className="experience-year">{experience.year}</span>
                     <h3>{experience.title}</h3>
                     <p>{experience.company}</p>
+                    {/* Touch screens have no hover, so phones show that each role opens (About.css). */}
+                    <span className="experience-more" aria-hidden="true" />
                   </button>
                 </li>
               ))}

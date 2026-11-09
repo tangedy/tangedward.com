@@ -134,28 +134,127 @@
   color: var(--color-dark);
 }
 
+/* ---------- Phones: two-up gallery and a full-screen viewer ---------- */
+
 @media (max-width: 820px) {
   .art-gallery {
-    --art-gap: 0.5rem;
+    --art-gap: 0.375rem;
   }
 
   .art-page .main-content {
     height: auto;
     overflow: visible;
-    padding-top: 6.5rem;
+    padding-top: var(--mobile-top-offset);
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
   }
 
-  .art-modal .modal-body {
-    grid-template-columns: 1fr;
+  .art-tile {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .art-tile:hover img {
+    transform: none;
+  }
+
+  /* The viewer takes the whole screen on the page's own background, not a sheet. */
+  .modal-content.art-modal {
+    height: 100dvh;
+    max-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(10deg, #eeeee5 0%, #f5f7f8 70%);
+    box-shadow: none;
+    transform: none;
+    opacity: 0;
+    overflow: hidden;
+    animation: menuFadeIn 0.3s ease forwards;
+  }
+
+  .modal-overlay.closing .modal-content.art-modal,
+  .modal-content.art-modal.closing {
+    animation: viewerFadeOut 0.3s ease-in forwards;
+  }
+
+  /* Art.css loads before Modal.css, so these repeat .modal-content/.modal-body to outrank the sheet styles. */
+  .modal-content.art-modal::before {
+    content: none;
+  }
+
+  .art-modal .modal-body.modal-body {
+    height: 100%;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 4rem var(--page-gutter) calc(1rem + env(safe-area-inset-bottom));
   }
 
   .art-modal .modal-image {
     order: -1;
+    flex: 1 1 auto;
+    min-height: 0;
+    justify-content: center;
+    align-items: center;
   }
 
   .art-modal .modal-image img {
-    max-height: 60vh;
+    max-height: calc(100dvh - 17rem);
   }
+
+  .art-modal .modal-text {
+    padding-right: 0;
+  }
+
+  .art-modal .modal-text h2 {
+    margin-bottom: 0.25rem;
+  }
+
+  .art-modal .modal-text h3 {
+    font-weight: 400;
+    color: var(--color-light);
+    font-size: var(--type-body);
+  }
+
+  .art-modal-link {
+    margin-top: 0.5rem;
+    font-size: var(--type-label);
+  }
+
+  .art-modal-stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--mobile-rule);
+    font-size: var(--type-label);
+    color: var(--color-light);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .art-modal-stepper button {
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 0;
+    color: var(--color-dark);
+    font: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .art-modal-stepper button:first-child {
+    margin-left: -0.75rem;
+  }
+
+  .art-modal-stepper button:last-child {
+    margin-right: -0.75rem;
+  }
+}
+
+@keyframes viewerFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

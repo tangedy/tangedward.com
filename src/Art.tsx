@@ -4,8 +4,9 @@ import './Art.css';
 import './Modal.css';
 import './Skeleton.css';
 import SiteHeader from './SiteHeader';
-import { Artwork, GalleryUnit, artImage, artstationUrl, artworks, galleryRows } from './artworks';
+import { Artwork, GalleryUnit, artImage, artstationUrl, artworks, galleryRows, mobileGalleryRows } from './artworks';
 import { useImageLoaded } from './hooks/useImageLoaded';
+import { useIsMobile } from './hooks/useIsMobile';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
@@ -14,7 +15,8 @@ const getArtwork = (slug: string) => bySlug.get(slug) as Artwork;
 const ratioOf = (artwork: Artwork) => artwork.width / artwork.height;
 
 // Reading order of the gallery (row by row, top to bottom within a stack) drives prev/next.
-const orderedArtworks = galleryRows.flat(2).map(getArtwork);
+const desktopOrder = galleryRows.flat(2).map(getArtwork);
+const mobileOrder = mobileGalleryRows.flat(2).map(getArtwork);
 
 // A stacked pair fills one column: its combined shape is narrower than either piece alone.
 const unitRatio = (unit: GalleryUnit) => (
@@ -39,6 +41,9 @@ function Art() {
   const closeTimerRef = useRef<number | null>(null);
 
   const gallery = useStaggeredFadeIn<HTMLDivElement>(2, { delay: 200 });
+  const isMobile = useIsMobile();
+  const rows = isMobile ? mobileGalleryRows : galleryRows;
+  const orderedArtworks = isMobile ? mobileOrder : desktopOrder;
 
   const openPiece = (artwork: Artwork) => {
     triggerRef.current = document.activeElement as HTMLElement;
@@ -63,7 +68,7 @@ function Art() {
     const index = orderedArtworks.indexOf(openArtwork);
     const next = orderedArtworks[(index + direction + orderedArtworks.length) % orderedArtworks.length];
     setSearchParams({ piece: next.slug }, { replace: true });
-  }, [openArtwork, setSearchParams]);
+  }, [openArtwork, orderedArtworks, setSearchParams]);
 
   useEffect(() => () => {
     if (closeTimerRef.current !== null) {
@@ -80,7 +85,7 @@ function Art() {
           ref={gallery.ref}
           className={`art-gallery fade-in-element ${gallery.isVisible ? 'visible' : ''}`}
         >
-          {galleryRows.map((row, rowIndex) => {
+          {rows.map((row, rowIndex) => {
             const rowRatio = row.reduce((sum, unit) => sum + unitRatio(unit), 0);
 
             return (
@@ -98,6 +103,7 @@ function Art() {
                         artwork={getArtwork(slug)}
                         priority={priority}
                         widthShare={widthShare}
+                        isMobile={isMobile}
                         onOpen={openPiece}
                       />
                     ))}
@@ -108,6 +114,7 @@ function Art() {
                     artwork={getArtwork(unit)}
                     priority={priority}
                     widthShare={widthShare}
+                    isMobile={isMobile}
                     onOpen={openPiece}
                     style={style}
                   />
@@ -125,6 +132,7 @@ function Art() {
           isClosing={isClosing}
           onClose={closePiece}
           onStep={stepPiece}
+          position={isMobile ? { index: orderedArtworks.indexOf(openArtwork), total: orderedArtworks.length } : undefined}
         />
       )}
     </div>
@@ -143,20 +151,21 @@ const gridSrcSet = (artwork: Artwork) => gridWidths
  * tile on a 2x screen fetches the 400px or 800px file instead of the 1600px original.
  * Above 1144px the gallery stops growing at its 1080px max width.
  */
-const tileSizes = (widthShare: number) => {
+const tileSizes = (widthShare: number, isMobile: boolean) => {
   const percent = Math.ceil(widthShare * 100);
-  return `(min-width: 1144px) ${Math.ceil(widthShare * 1080)}px, ${percent}vw`;
+  return isMobile ? `${percent}vw` : `(min-width: 1144px) ${Math.ceil(widthShare * 1080)}px, ${percent}vw`;
 };
 
 interface ArtTileProps {
   artwork: Artwork;
   priority: TilePriority;
   widthShare: number;
+  isMobile: boolean;
   onOpen: (artwork: Artwork) => void;
   style?: React.CSSProperties;
 }
 
-function ArtTile({ artwork, priority, widthShare, onOpen, style }: ArtTileProps) {
+function ArtTile({ artwork, priority, widthShare, isMobile, onOpen, style }: ArtTileProps) {
   const image = useImageLoaded();
 
   return (
@@ -171,7 +180,7 @@ function ArtTile({ artwork, priority, widthShare, onOpen, style }: ArtTileProps)
         ref={image.ref}
         src={artImage(artwork, 800)}
         srcSet={gridSrcSet(artwork)}
-        sizes={tileSizes(widthShare)}
+        sizes={tileSizes(widthShare, isMobile)}
         width={artwork.width}
         height={artwork.height}
         alt=""
@@ -189,11 +198,33 @@ interface ArtModalProps {
   isClosing: boolean;
   onClose: () => void;
   onStep: (direction: 1 | -1) => void;
+  /** Phones only: where this piece sits in the gallery, shown between the prev/next buttons. */
+  position?: { index: number; total: number };
 }
 
-function ArtModal({ artwork, isClosing, onClose, onStep }: ArtModalProps) {
+function ArtModal({ artwork, isClosing, onClose, onStep, position }: ArtModalProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  // Phones: a horizontal swipe on the full-screen viewer steps to the neighbouring piece.
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || !position) return;
+
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      onStep(dx < 0 ? 1 : -1);
+    }
+  };
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -239,6 +270,8 @@ function ArtModal({ artwork, isClosing, onClose, onStep }: ArtModalProps) {
         aria-modal="true"
         aria-labelledby="art-dialog-title"
         onClick={(event) => event.stopPropagation()}
+        onTouchStart={position ? handleTouchStart : undefined}
+        onTouchEnd={position ? handleTouchEnd : undefined}
       >
         <button
           ref={closeButtonRef}
@@ -260,6 +293,16 @@ function ArtModal({ artwork, isClosing, onClose, onStep }: ArtModalProps) {
             >
               View on ArtStation ↗︎
             </a>
+
+            {position && (
+              <div className="art-modal-stepper">
+                <button type="button" onClick={() => onStep(-1)} aria-label="Previous artwork">←</button>
+                <span>
+                  {String(position.index + 1).padStart(2, '0')} / {String(position.total).padStart(2, '0')}
+                </span>
+                <button type="button" onClick={() => onStep(1)} aria-label="Next artwork">→</button>
+              </div>
+            )}
           </div>
 
           <div className="modal-image">
