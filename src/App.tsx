@@ -15,6 +15,7 @@ const EasterEgg = lazy(loadEasterEgg);
 
 const projectImageUrls = [
   '/project assets/MinimalFinance.webp',
+  '/project assets/FitStealer.webp',
   '/project assets/MOTI.webp',
   '/project assets/Recipe Radar.webp',
   '/project assets/Pixelize.webp',

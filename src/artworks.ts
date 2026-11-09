@@ -9,7 +9,7 @@ export interface Artwork {
 
 /**
  * A curated selection from artstation.com/tangedy.
- * Images live in /public/art as `<slug>-800.webp` (grid) and `<slug>-1600.webp` (lightbox).
+ * Images live in /public/art as `<slug>-<width>.webp` at 400/800/1200 (grid) and 1600 (preview).
  * The gallery's layout and order come from `galleryRows` below.
  */
 export const artworks: Artwork[] = [
@@ -44,14 +44,14 @@ export const artworks: Artwork[] = [
 export type GalleryUnit = string | [string, string];
 
 export const galleryRows: GalleryUnit[][] = [
-  ['scroll'],
   ['summer-2023', '17th', ['12-15-22', 'gaze']],
+  ['scroll'],
   ['bridge-sketch', '2-18-23', 'sit', 'zhuo'],
   ['symphony', 'morning-in-kensington'],
   ['life-drawing-workshop', 'marcus-aurelius', 'vagabond-musashi'],
   ['portrait-study', '2-24-23', '3-05-23'],
 ];
 
-export const artImage = (artwork: Artwork, size: 800 | 1600) => `/art/${artwork.slug}-${size}.webp`;
+export const artImage = (artwork: Artwork, size: 400 | 800 | 1200 | 1600) => `/art/${artwork.slug}-${size}.webp`;
 
 export const artstationUrl = (artwork: Artwork) => `https://www.artstation.com/artwork/${artwork.artstationId}`;

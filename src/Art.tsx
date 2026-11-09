@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './Art.css';
 import './Modal.css';
+import './Skeleton.css';
 import SiteHeader from './SiteHeader';
 import { Artwork, GalleryUnit, artImage, artstationUrl, artworks, galleryRows } from './artworks';
+import { useImageLoaded } from './hooks/useImageLoaded';
 import { useStaggeredFadeIn } from './hooks/useStaggeredFadeIn';
 import { usePageMetadata } from './hooks/usePageMetadata';
 
@@ -78,11 +80,15 @@ function Art() {
           ref={gallery.ref}
           className={`art-gallery fade-in-element ${gallery.isVisible ? 'visible' : ''}`}
         >
-          {galleryRows.map((row, rowIndex) => (
+          {galleryRows.map((row, rowIndex) => {
+            const rowRatio = row.reduce((sum, unit) => sum + unitRatio(unit), 0);
+
+            return (
             <div className="art-row" key={rowIndex}>
               {row.map((unit) => {
                 const style = { '--ratio': unitRatio(unit) } as React.CSSProperties;
-                const eager = rowIndex < 2;
+                const priority: TilePriority = rowIndex === 0 ? 'high' : rowIndex === 1 ? 'eager' : 'lazy';
+                const widthShare = unitRatio(unit) / rowRatio;
 
                 return Array.isArray(unit) ? (
                   <div className="art-stack" key={unit.join('+')} style={style}>
@@ -90,7 +96,8 @@ function Art() {
                       <ArtTile
                         key={slug}
                         artwork={getArtwork(slug)}
-                        eager={eager}
+                        priority={priority}
+                        widthShare={widthShare}
                         onOpen={openPiece}
                       />
                     ))}
@@ -99,14 +106,16 @@ function Art() {
                   <ArtTile
                     key={unit}
                     artwork={getArtwork(unit)}
-                    eager={eager}
+                    priority={priority}
+                    widthShare={widthShare}
                     onOpen={openPiece}
                     style={style}
                   />
                 );
               })}
             </div>
-          ))}
+            );
+          })}
         </div>
       </main>
 
@@ -122,31 +131,54 @@ function Art() {
   );
 }
 
+type TilePriority = 'high' | 'eager' | 'lazy';
+
+const gridWidths = [400, 800, 1200, 1600] as const;
+const gridSrcSet = (artwork: Artwork) => gridWidths
+  .map((width) => `${artImage(artwork, width)} ${width}w`)
+  .join(', ');
+
+/**
+ * Tells the browser how wide a tile really renders (its share of the row), so a small
+ * tile on a 2x screen fetches the 400px or 800px file instead of the 1600px original.
+ * Above 1144px the gallery stops growing at its 1080px max width.
+ */
+const tileSizes = (widthShare: number) => {
+  const percent = Math.ceil(widthShare * 100);
+  return `(min-width: 1144px) ${Math.ceil(widthShare * 1080)}px, ${percent}vw`;
+};
+
 interface ArtTileProps {
   artwork: Artwork;
-  eager: boolean;
+  priority: TilePriority;
+  widthShare: number;
   onOpen: (artwork: Artwork) => void;
   style?: React.CSSProperties;
 }
 
-function ArtTile({ artwork, eager, onOpen, style }: ArtTileProps) {
+function ArtTile({ artwork, priority, widthShare, onOpen, style }: ArtTileProps) {
+  const image = useImageLoaded();
+
   return (
     <button
       type="button"
-      className="art-tile"
+      className={`art-tile skeleton ${image.loaded ? 'is-loaded' : ''}`}
       style={{ ...style, '--inverse-ratio': 1 / ratioOf(artwork) } as React.CSSProperties}
       onClick={() => onOpen(artwork)}
       aria-label={`${artwork.title}, ${artwork.year}`}
     >
       <img
+        ref={image.ref}
         src={artImage(artwork, 800)}
-        srcSet={`${artImage(artwork, 800)} 800w, ${artImage(artwork, 1600)} 1600w`}
-        sizes="(max-width: 820px) 60vw, 45vw"
+        srcSet={gridSrcSet(artwork)}
+        sizes={tileSizes(widthShare)}
         width={artwork.width}
         height={artwork.height}
         alt=""
-        loading={eager ? 'eager' : 'lazy'}
+        loading={priority === 'lazy' ? 'lazy' : 'eager'}
+        fetchPriority={priority === 'high' ? 'high' : 'auto'}
         decoding="async"
+        onLoad={image.onLoad}
       />
     </button>
   );
@@ -231,17 +263,46 @@ function ArtModal({ artwork, isClosing, onClose, onStep }: ArtModalProps) {
           </div>
 
           <div className="modal-image">
-            <img
-              key={artwork.slug}
-              src={artImage(artwork, 1600)}
-              width={artwork.width}
-              height={artwork.height}
-              alt={artwork.title}
-            />
+            <ArtModalImage key={artwork.slug} artwork={artwork} />
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Shows the grid-sized image straight away (it is almost always cached already), then
+ * fades the full-size image in over it once it arrives. A shimmer covers the rare case
+ * where neither is ready yet, such as opening a shared link.
+ */
+function ArtModalImage({ artwork }: { artwork: Artwork }) {
+  const preview = useImageLoaded();
+  const full = useImageLoaded();
+
+  return (
+    <span
+      className={`art-modal-frame skeleton ${preview.loaded || full.loaded ? 'is-loaded' : ''} ${full.loaded ? 'is-sharp' : ''}`}
+    >
+      <img
+        ref={preview.ref}
+        className="art-modal-preview"
+        src={artImage(artwork, 800)}
+        width={artwork.width}
+        height={artwork.height}
+        alt=""
+        onLoad={preview.onLoad}
+      />
+      <img
+        ref={full.ref}
+        className="art-modal-full"
+        src={artImage(artwork, 1600)}
+        width={artwork.width}
+        height={artwork.height}
+        alt={artwork.title}
+        onLoad={full.onLoad}
+      />
+    </span>
   );
 }
 

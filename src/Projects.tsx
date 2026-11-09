@@ -16,6 +16,8 @@ interface Project {
   videoUrl?: string;
   liveUrl?: string;
   githubUrl?: string;
+  /** Tall phone mockups sit beside their text instead of above it. */
+  portrait?: boolean;
 }
 
 const mleePosterUrl = "/project assets/matthewproject2-poster.webp";
@@ -29,7 +31,19 @@ const projects: Project[] = [
     description: "A privacy-focused iOS 17 personal-finance application supporting bank statement imports, spending analytics, recurring expense detection, and transaction categorization.",
     technologies: ["Swift", "SwiftUI", "SwiftData", "Swift Charts", "XCTest", "GitHub Actions"],
     year: "2026",
-    imageUrl: "/project assets/MinimalFinance.webp"
+    imageUrl: "/project assets/MinimalFinance.webp",
+    portrait: true
+  },
+  {
+    id: 7,
+    slug: "fitstealer",
+    title: "FitStealer",
+    description: "Shazam for clothes. A floating overlay captures any outfit on your screen, then computer vision breaks it into individual pieces and finds where to buy each one online.",
+    technologies: ["Python", "TypeScript", "Kotlin", "Swift", "Baseten", "Shopify Catalog"],
+    year: "2026",
+    imageUrl: "/project assets/FitStealer.webp",
+    githubUrl: "https://github.com/Hack-the-North-2026/HacktheNorth2026",
+    portrait: true
   },
   {
     id: 5,
@@ -151,7 +165,7 @@ const Projects: React.FC = () => {
 
             <article
               ref={projectDetail.ref}
-              className={`project-detail ${selectedProject.id === 4 ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
+              className={`project-detail ${selectedProject.portrait ? 'portrait-project' : ''} fade-in-element ${projectDetail.isVisible ? 'visible' : ''}`}
               aria-live="polite"
             >
               <div className={`project-image ${isMleeSelected ? 'video-project' : ''}`}>

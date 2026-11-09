@@ -51,7 +51,7 @@ test('alternates the home greeting on each visit', async () => {
 
 test('unlocks the easter egg by typing the secret phrase', async () => {
   renderApp('/about');
-  await screen.findByRole('heading', { name: 'about me' });
+  await screen.findByRole('heading', { name: 'About me' });
 
   'easter egg'.split('').forEach((key) => fireEvent.keyDown(window, { key }));
 
@@ -124,12 +124,12 @@ test('displays the MLee portfolio project beneath MinimalFinance', async () => {
 
 test('opens and dismisses experience details from the keyboard', async () => {
   renderApp('/about');
-  const experienceButton = await screen.findByRole('button', { name: /backend developer intern/i });
+  const experienceButton = await screen.findByRole('button', { name: /software analyst co-op/i });
   jest.useFakeTimers();
   experienceButton.focus();
   fireEvent.click(experienceButton);
 
-  expect(screen.getByRole('dialog', { name: 'Backend Developer Intern' })).toBeInTheDocument();
+  expect(screen.getByRole('dialog', { name: 'Software Analyst Co-op' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Close experience details' })).toHaveFocus();
 
   fireEvent.keyDown(document, { key: 'Escape' });
@@ -160,7 +160,7 @@ test('moves through the project list with the arrow keys', async () => {
   firstSelector.focus();
 
   fireEvent.keyDown(firstSelector, { key: 'ArrowDown' });
-  const secondSelector = screen.getByRole('button', { name: /mlee portfolio site/i });
+  const secondSelector = screen.getByRole('button', { name: /fitstealer/i });
   expect(secondSelector).toHaveFocus();
   expect(secondSelector).toHaveAttribute('aria-pressed', 'true');
 
@@ -215,3 +215,118 @@ test('places every artwork in the gallery layout exactly once', () => {
 
   expect([...placed].sort()).toEqual(artworks.map((artwork) => artwork.slug).sort());
 });
+
+test('fades an art tile in once its image has loaded', async () => {
+  renderApp('/art');
+
+  const tile = await screen.findByRole('button', { name: 'Scroll, 2025' });
+  expect(tile).not.toHaveClass('is-loaded');
+
+  fireEvent.load(tile.querySelector('img') as HTMLImageElement);
+  expect(tile).toHaveClass('is-loaded');
+});
+
+test('lists experiences newest first without Waddlewell', async () => {
+  renderApp('/about');
+
+  await screen.findByRole('button', { name: /software engineer intern/i });
+  const titles = screen.getAllByRole('button', { name: /intern|co-op|developer/i })
+    .map((button) => button.querySelector('h3')?.textContent);
+
+  expect(titles).toEqual([
+    'Software Engineer Intern',
+    'AI/ML Developer',
+    'Software Developer Co-op',
+    'Software Analyst Co-op',
+    'Frontend Developer',
+  ]);
+  expect(screen.getByText('University of Waterloo Reality Labs')).toBeInTheDocument();
+  expect(screen.queryByText(/waddlewell/i)).not.toBeInTheDocument();
+  expect(screen.getByText('TD Bank')).toBeInTheDocument();
+});
+
+test('shows a loading shimmer until an experience photo arrives', async () => {
+  renderApp('/about');
+
+  fireEvent.click(await screen.findByRole('button', { name: /software analyst co-op/i }));
+  const photo = screen.getByAltText('Software Analyst Co-op');
+  const frame = photo.parentElement as HTMLElement;
+
+  expect(frame).toHaveClass('skeleton');
+  expect(frame).not.toHaveClass('is-loaded');
+  fireEvent.load(photo);
+  expect(frame).toHaveClass('is-loaded');
+});
+
+test('shows the pho photo and summary for the Software Developer Co-op', async () => {
+  renderApp('/about');
+
+  fireEvent.click(await screen.findByRole('button', { name: /software developer co-op/i }));
+
+  const dialog = screen.getByRole('dialog', { name: 'Software Developer Co-op' });
+  expect(within(dialog).getByText(/automate end-to-end testing/i)).toBeInTheDocument();
+  expect(within(dialog).getByText('Pho with all the interns on the last day!')).toBeInTheDocument();
+  expect(within(dialog).getByAltText('Software Developer Co-op'))
+    .toHaveAttribute('srcset', expect.stringContaining('/experience/ops-pho-1200.webp 1200w'));
+});
+
+test('drops the skills section and labels testimonials', async () => {
+  renderApp('/about');
+
+  expect(await screen.findByRole('heading', { name: 'Testimonials' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'About me' })).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /skills/i })).not.toBeInTheDocument();
+});
+
+test('advances to the next testimonial when the active bar finishes filling', async () => {
+  renderApp('/about');
+
+  const first = (await screen.findByText(/consistently delivered outstanding results/i)).closest('figure');
+  const second = screen.getByText(/outstanding performance throughout his co-op term/i).closest('figure');
+  expect(screen.getByText('— Manager, Solutions Delivery')).toBeInTheDocument();
+  expect(first).toHaveClass('is-active');
+  expect(screen.queryByText(/0\d \/ 0\d/)).not.toBeInTheDocument();
+
+  const rotator = first?.parentElement as HTMLElement;
+  // The first testimonial rides in with the section's fade-in; the switch animation waits for a change.
+  expect(rotator).not.toHaveClass('has-switched');
+
+  fireEvent.animationEnd(screen.getByTestId('testimonial-progress'));
+  expect(second).toHaveClass('is-active');
+  expect(first).not.toHaveClass('is-active');
+  expect(rotator).toHaveClass('has-switched');
+
+  fireEvent.animationEnd(screen.getByTestId('testimonial-progress'));
+  expect(first).toHaveClass('is-active');
+});
+
+test('pauses the testimonial fill while hovered and jumps from a bar', async () => {
+  renderApp('/about');
+
+  const secondBar = await screen.findByRole('button', { name: 'Show testimonial 2' });
+  const rotator = secondBar.closest('.testimonials') as HTMLElement;
+
+  fireEvent.mouseEnter(rotator);
+  expect(rotator).toHaveClass('is-paused');
+  fireEvent.mouseLeave(rotator);
+  expect(rotator).not.toHaveClass('is-paused');
+
+  fireEvent.click(secondBar);
+  expect(secondBar).toHaveAttribute('aria-pressed', 'true');
+  expect(secondBar.querySelector('[data-testid="testimonial-progress"]')).toBeInTheDocument();
+  expect(screen.getByText(/outstanding performance throughout his co-op term/i).closest('figure')).toHaveClass('is-active');
+});
+
+test('lists FitStealer right under MinimalFinance with its own link', async () => {
+  renderApp('/projects?project=fitstealer');
+
+  expect(await screen.findByRole('heading', { name: 'FitStealer' })).toBeInTheDocument();
+  expect(screen.getByAltText('FitStealer project preview')).toHaveAttribute('src', '/project assets/FitStealer.webp');
+  expect(screen.getByRole('link', { name: /view code/i }))
+    .toHaveAttribute('href', 'https://github.com/Hack-the-North-2026/HacktheNorth2026');
+  expect(screen.getByText(/computer vision/i)).toBeInTheDocument();
+
+  const selectorTitles = Array.from(document.querySelectorAll('.project-selector-title')).map((el) => el.textContent);
+  expect(selectorTitles.slice(0, 3)).toEqual(['MinimalFinance', 'FitStealer', 'MLee Portfolio Site']);
+});
+
